@@ -9,5 +9,8 @@
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "author": "Luka Tarman",
-  "license": "ISC"
+  "license": "ISC",
+  "devDependencies": {
+    "@types/node": "^20.10.5"
+  }
 }
