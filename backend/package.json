@@ -5,8 +5,7 @@
   "main": "main.ts",
   "type": "module",
   "scripts": {
-    "start": "ts-node-esm src/main.ts",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "start": "ts-node-esm src/main.ts"
   },
   "author": "Luka Tarman",
   "license": "ISC",

@@ -1,21 +1,20 @@
+import { DatabaseClient } from "./infrastructure/database.client.ts";
 import { User } from "./models/user.ts";
-import { MongoMemoryServer } from "mongodb-memory-server";
 
 const main = async (): Promise<void> => {
   console.log("started");
 
-  const testUser = new User(
-    "Luka Tarman",
-    new Date("21 september 1989"),
-    "Ljubljana",
-    500
-  );
+  const database = await new DatabaseClient().init();
 
-  const databaseServer = await MongoMemoryServer.create();
+  const testUser = new User("Roko", new Date("21 september 1989"), "Ljubljana", 500);
 
-  console.log(databaseServer.getUri());
+  await database.insertOne(testUser);
+  const results = await database.getAll();
+
   console.log(testUser);
-  databaseServer.stop();
+  console.log(results);
+
+  database.stop();
 };
 
 main();
