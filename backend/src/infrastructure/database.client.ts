@@ -1,9 +1,10 @@
-import { Collection, MongoClient, WithId } from "mongodb";
+import { MongoClient, WithId } from "mongodb";
 import { MongoMemoryServer } from "mongodb-memory-server";
+import { User } from "../models/user.ts";
 
 export class DatabaseClient {
-  public collection: Collection<Document>;
-  public client: MongoClient;
+  public collection: any = "";
+  public client: any;
 
   async init(): Promise<this> {
     const url = (await MongoMemoryServer.create()).getUri();
@@ -19,8 +20,8 @@ export class DatabaseClient {
     return this;
   }
 
-  async insertOne(testUser: any): Promise<void> {
-    await this.collection.insertOne(testUser);
+  async insertOne(user: User): Promise<void> {
+    await this.collection.insertOne(user);
   }
 
   async getAll(): Promise<WithId<Document>[]> {
