@@ -1,4 +1,5 @@
 import { ageSurcharges, cityPrices } from "../assets/base.price.data.mock.ts";
+import { Coverage, CoverageNames } from "./coverage.ts";
 import { UserDTO } from "./user.dto.ts";
 
 export class User {
@@ -8,6 +9,8 @@ export class User {
   public vehiclePower: number;
   public voucher: number;
   public priceMatch: number;
+  public basePrice: number;
+  public coverages: Coverage[];
 
   constructor(input: UserDTO) {
     this.name = input.name;
@@ -16,9 +19,19 @@ export class User {
     this.vehiclePower = input.vehiclePower;
     this.voucher = input.voucher || 0;
     this.priceMatch = input.priceMatch || 0;
+    this.basePrice = this.getBasePrice();
+    this.coverages = this.addCoverages();
   }
 
-  get basePrice() {
+  addCoverages() {
+    return [
+      new Coverage(this, CoverageNames.protection),
+      new Coverage(this, CoverageNames.ao),
+      new Coverage(this, CoverageNames.glass),
+    ];
+  }
+
+  getBasePrice() {
     const cityPrice = this.cityPrice;
 
     return cityPrice + cityPrice * 0.01 * this.ageSurcharge;
@@ -37,7 +50,7 @@ export class User {
     );
   }
 
-  private get age() {
+  get age() {
     return Math.floor(
       (new Date().getTime() - new Date(this.birthday).getTime()) / 3.15576e10
     );
