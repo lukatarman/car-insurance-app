@@ -25,7 +25,7 @@ const main = async (): Promise<void> => {
     name: "test",
     birthday: new Date(),
     city: "test",
-    vehiclePower: 4,
+    vehiclePower: 400,
   };
 
   const user4 = new User(user3);
@@ -34,7 +34,7 @@ const main = async (): Promise<void> => {
   await usersController.insertOneUser(user2);
   await usersController.insertOneUser(user3);
   console.log(await database.getAll());
-  console.log(user4.totalPrice);
+  console.log(user4);
 };
 
 main();
