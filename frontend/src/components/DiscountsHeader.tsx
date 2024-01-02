@@ -3,8 +3,10 @@ import React from "react";
 const DiscountsHeader = () => {
   const testArr = [1, 2, 3, 4];
 
-  const testContentRender = testArr.map((content) => (
-    <div className="m-2 p-2">test content</div>
+  const testContentRender = testArr.map((content, index) => (
+    <div key={index} className="m-2 p-2">
+      test content
+    </div>
   ));
 
   return (

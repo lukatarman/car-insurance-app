@@ -1,34 +1,48 @@
-import React, { Fragment } from "react";
+import React from "react";
+import { UserFormInputType } from "./UserForm.js";
 
-const UserFormInput = ({ formValues }: { formValues: any }) => {
-  const formRender = formValues.map(
-    ({ inputName, inputType }: { inputName: any; inputType: any }) => {
-      const label = inputName[0].toUpperCase() + inputName.slice(1);
+const UserFormInput: React.FC<{ formValue: UserFormInputType; key: number }> = (
+  { formValue },
+  key
+) => {
+  const { inputName, inputType } = formValue;
 
-      const hasEur = inputName === "voucher" || inputName === "price match";
+  const label = inputName[0].toUpperCase() + inputName.slice(1);
 
-      return (
-        <div className="flex m-1 w-100">
-          <div className="flex flex-col justify-center min-w-[120px]">
-            <label htmlFor={inputName} className="block w-100">
-              {label}:
-            </label>
-          </div>
-          <div className="flex flex-row justify-center align-center rounded-md w-[200px]">
-            <input
-              type={inputType}
-              name={inputName}
-              id={inputName}
-              className="p-1 border-2 border-black-500 rounded-md w-full"
-            />
-            {hasEur && <div className="flex flex-col justify-center px-1">EUR</div>}
-          </div>
+  const hasEur = inputName === "voucher" || inputName === "price match";
+
+  const getValue = () => {
+    if (formValue.innerState instanceof Date) return;
+    return formValue.innerState;
+  };
+
+  const handleInputChange = (e: any) => {
+    console.log(e.target.value);
+    if (e.target.value) formValue.setInnerState(e.target.value);
+  };
+
+  return (
+    <div key={key} className="flex flex-col">
+      <div className="flex m-1 w-100">
+        <div className="flex flex-col justify-center min-w-[120px]">
+          <label htmlFor={inputName} className="block w-100">
+            {label}:
+          </label>
         </div>
-      );
-    }
+        <div className="flex flex-row justify-center align-center rounded-md w-[200px]">
+          <input
+            onChange={handleInputChange}
+            type={inputType}
+            value={getValue()}
+            name={inputName}
+            id={inputName}
+            className="p-1 border-2 border-black-500 rounded-md w-full"
+          />
+          {hasEur && <div className="flex flex-col justify-center px-1">EUR</div>}
+        </div>
+      </div>
+    </div>
   );
-
-  return <div className="flex flex-col">{formRender}</div>;
 };
 
 export default UserFormInput;
