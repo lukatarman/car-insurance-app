@@ -104,11 +104,16 @@ const UserForm = () => {
 
   return (
     <div className="p-8 flex flex-col justify-center">
-      <h2 className="text-2xl mb-4">User data</h2>
+      <h2 className="text-2xl font-semibold mb-4">User data</h2>
       <form onSubmit={testFunc}>
         <div>{formRender}</div>
         <div>
-          <button type="submit">Save</button>
+          <button
+            className="py-1 px-4 m-2 bg-gray-200 border border-gray-400 rounded"
+            type="submit"
+          >
+            Save
+          </button>
         </div>
       </form>
     </div>

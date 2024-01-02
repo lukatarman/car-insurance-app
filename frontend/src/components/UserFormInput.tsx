@@ -38,7 +38,7 @@ const UserFormInput: React.FC<{ formValue: UserFormInputType; key: number }> = (
             id={inputName}
             className="p-1 border-2 border-black-500 rounded-md w-full"
           />
-          {hasEur && <div className="flex flex-col justify-center px-1">EUR</div>}
+          {hasEur && <div className="flex flex-col justify-center px-1 mr-2">EUR</div>}
         </div>
       </div>
     </div>
