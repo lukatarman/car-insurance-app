@@ -109,7 +109,7 @@ const UserForm = () => {
         <div>{formRender}</div>
         <div>
           <button
-            className="py-1 px-4 m-2 bg-gray-200 border border-gray-400 rounded"
+            className="py-1 px-4 m-2 bg-gray-200 border border-gray-300 rounded"
             type="submit"
           >
             Save
