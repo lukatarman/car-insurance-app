@@ -1,5 +1,5 @@
 import React from "react";
-import { UserFormInputType } from "./UserForm.js";
+import { UserFormInputType } from "./UserData.js";
 
 const UserFormInput: React.FC<{ formValue: UserFormInputType; key: number }> = (
   { formValue },

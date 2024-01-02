@@ -1,4 +1,4 @@
-import { useEffect } from "react";
+import React, { useEffect } from "react";
 import UserFormInput from "./UserFormInput";
 import {
   userInputBirthdateValueState,
@@ -29,7 +29,7 @@ export type UserFormInputType = {
     | SetterOrUpdater<number>;
 };
 
-const UserForm = () => {
+const UserData = () => {
   const [nameInput, setNameInput] = useRecoilState(userInputNameValueState);
   const [birthdateInput, setBirthdateInput] = useRecoilState(
     userInputBirthdateValueState
@@ -86,38 +86,20 @@ const UserForm = () => {
     <UserFormInput key={index} formValue={formValue} />
   ));
 
-  const testFunc = (e: any) => {
-    e.preventDefault();
-
-    const formData: formData = {
-      name: nameInput,
-      birthdate: birthdateInput,
-      city: cityInput,
-      vehiclePower: vehiclePowerInput,
-      voucher: voucherInput,
-      priceMatch: priceMatchInput,
-    };
-
-    console.log("submitted");
-    console.log(formData);
-  };
-
   return (
-    <div className="p-8 flex flex-col justify-center">
+    <div className="p-8 flex flex-col justify-center grow basis-3/4">
       <h2 className="text-2xl font-semibold mb-4">User data</h2>
-      <form onSubmit={testFunc}>
-        <div>{formRender}</div>
-        <div>
-          <button
-            className="py-1 px-4 m-2 bg-gray-200 border border-gray-300 rounded"
-            type="submit"
-          >
-            Save
-          </button>
-        </div>
-      </form>
+      <div>{formRender}</div>
+      <div>
+        <button
+          className="py-1 px-4 m-2 bg-gray-200 border border-gray-300 rounded"
+          type="submit"
+        >
+          Save
+        </button>
+      </div>
     </div>
   );
 };
 
-export default UserForm;
+export default UserData;
