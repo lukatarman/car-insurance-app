@@ -3,9 +3,14 @@ import React from "react";
 const DiscountsHeader = () => {
   const testArr = [1, 2, 3, 4];
 
+  const handleChange = () => {
+    console.log("detected");
+  };
+
   const testContentRender = testArr.map((content, index) => (
     <div key={index} className="m-2 p-2">
-      test content
+      <input type="checkbox" onChange={handleChange}></input>
+      <label>test</label>
     </div>
   ));
 
