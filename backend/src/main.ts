@@ -1,5 +1,7 @@
+import { QueriesRouter } from "./features/router.ts";
 import { UsersController } from "./features/users.controller.ts";
 import { DatabaseClient } from "./infrastructure/database.client.ts";
+import { WebServer } from "./infrastructure/web.server.ts";
 import { User } from "./models/user.ts";
 
 const main = async (): Promise<void> => {
@@ -8,6 +10,12 @@ const main = async (): Promise<void> => {
   const database = await new DatabaseClient().init();
 
   const usersController = new UsersController(database);
+
+  const queriesRouter = new QueriesRouter(usersController);
+
+  const webServer = new WebServer(queriesRouter);
+
+  webServer.start();
 
   const user = {
     name: "Luka",
@@ -33,8 +41,8 @@ const main = async (): Promise<void> => {
   await usersController.insertOneUser(user);
   await usersController.insertOneUser(user2);
   await usersController.insertOneUser(user3);
+  await usersController.insertOneUser(user4);
   console.log(await database.getAll());
-  console.log(user4);
 };
 
 main();
