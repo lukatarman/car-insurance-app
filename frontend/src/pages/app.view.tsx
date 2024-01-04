@@ -1,17 +1,10 @@
-import React from "react";
 import DiscountsHeader from "../components/DiscountsHeader";
 import UserData from "../components/UserData";
 import CoveragesSidebar from "../components/CoveragesSidebar";
-import { addUser } from "../adapters/http.client.adapter";
+import AppBehavior from "./app.behavior";
 
 function App() {
-  const handleFormSubmit = async (e: any) => {
-    e.preventDefault();
-
-    const response = await addUser({ name: "Test", age: 5 });
-
-    console.log(response);
-  };
+  const handleFormSubmit = AppBehavior();
 
   return (
     <div className="App">
