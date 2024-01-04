@@ -9,8 +9,9 @@ export class QueriesRouter {
   }
 
   routes = async (server: FastifyInstance) => {
-    server.get("/test", async (request) => {
-      const data = request.params;
+    server.post("/users", async (request) => {
+      const data = request.body;
+      console.log("Data:");
       console.log(data);
       this.controller;
       return;

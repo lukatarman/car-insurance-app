@@ -42,7 +42,7 @@ const main = async (): Promise<void> => {
   await usersController.insertOneUser(user2);
   await usersController.insertOneUser(user3);
   await usersController.insertOneUser(user4);
-  console.log(await database.getAll());
+  // console.log(await database.getAll());
 };
 
 main();

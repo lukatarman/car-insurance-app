@@ -2,22 +2,15 @@ import React from "react";
 import DiscountsHeader from "../components/DiscountsHeader";
 import UserData from "../components/UserData";
 import CoveragesSidebar from "../components/CoveragesSidebar";
+import { addUser } from "../adapters/http.client.adapter";
 
 function App() {
-  const handleFormSubmit = (e: any) => {
+  const handleFormSubmit = async (e: any) => {
     e.preventDefault();
 
-    // const formData: formData = {
-    //   name: nameInput,
-    //   birthdate: birthdateInput,
-    //   city: cityInput,
-    //   vehiclePower: vehiclePowerInput,
-    //   voucher: voucherInput,
-    //   priceMatch: priceMatchInput,
-    // };
+    const response = await addUser({ name: "Test", age: 5 });
 
-    console.log("submitted");
-    // console.log(formData);
+    console.log(response);
   };
 
   return (
