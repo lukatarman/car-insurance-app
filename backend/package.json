@@ -10,6 +10,7 @@
   "author": "Luka Tarman",
   "license": "ISC",
   "dependencies": {
+    "@fastify/cors": "8.5.0",
     "fastify": "4.25.2",
     "mongodb": "6.3.0",
     "mongodb-memory-server": "8.12.0"
