@@ -1,4 +1,4 @@
-import { useRecoilState, useRecoilValue, useSetRecoilState } from "recoil";
+import { useRecoilState, useRecoilValue } from "recoil";
 import {
   userInputBirthdateValueState,
   userInputCityValueState,
@@ -56,7 +56,6 @@ function AppBehavior() {
   };
 
   const handleIsSelectedChange = async () => {
-    console.log("changed");
     await getNewData();
   };
 
