@@ -8,23 +8,34 @@ export class AdviserDiscount implements Discount {
   public percentageCostOf: string = "";
   public flatCost: number = 0;
   public isShown: boolean = false;
+  private user: User;
 
   constructor(user: User) {
-    this.setCosts(user);
+    this.user = user;
+    this.setCosts();
+    this.checkIfShown();
   }
 
-  setCosts(user: User) {
+  setCosts() {
     this.percentageCost = 10;
     this.percentageCostOf = "base price";
-    this.flatCost = user.vehiclePower * 0.01 * this.percentageCost;
+    this.flatCost = this.user.vehiclePower * 0.01 * this.percentageCost;
   }
 
-  checkIfShown(user: User) {
-    this.isShown = this.checkIfAtLeastTwoCoveragesSelected(user.coverages) ? true : false;
+  checkIfShown() {
+    this.isShown = this.checkIfAtLeastTwoCoveragesSelected(this.user.coverages)
+      ? true
+      : false;
   }
 
   private checkIfAtLeastTwoCoveragesSelected(coverages: User["coverages"]): boolean {
     if (coverages.filter((coverage) => coverage.isSelected).length >= 2) return true;
     return false;
+  }
+
+  setIsSelected(value: boolean) {
+    this.isSelected = value;
+
+    this.user.getTotalPrice();
   }
 }

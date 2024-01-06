@@ -1,4 +1,4 @@
-import { User } from "../models/users.js";
+import { User } from "../models/users";
 
 export enum CoverageNames {
   protection = "Bonus protection",
@@ -6,14 +6,13 @@ export enum CoverageNames {
   glass = "Glass protection",
 }
 
-export interface Coverage {
+export type CoverageType = {
   name: CoverageNames | DiscountNames | SurchargeNames;
   isSelected: boolean;
   percentageCost: number;
   percentageCostOf: string;
   flatCost: number;
-  setCosts: (user: User) => void;
-}
+};
 
 export enum DiscountNames {
   commercial = "Commercial discount",
@@ -21,7 +20,7 @@ export enum DiscountNames {
   vip = "VIP discount",
 }
 
-export interface Discount extends Coverage {
+export interface Discount extends CoverageType {
   isShown: boolean;
 }
 

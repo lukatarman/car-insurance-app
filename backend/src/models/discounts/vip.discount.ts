@@ -8,19 +8,28 @@ export class VIPDiscount implements Discount {
   public percentageCostOf: string = "";
   public flatCost: number = 0;
   public isShown: boolean = false;
+  private user: User;
 
   constructor(user: User) {
-    this.setCosts(user);
-    this.isShown = this.checkIfShown(user);
+    this.user = user;
+    this.setCosts();
+    this.isShown = this.checkIfShown();
   }
 
-  setCosts(user: User) {
+  setCosts() {
     this.percentageCost = 5;
     this.percentageCostOf = "total price";
-    this.flatCost = user.totalPrice * 0.01 * this.percentageCost;
+    this.flatCost = this.user.totalPrice * 0.01 * this.percentageCost;
   }
 
-  checkIfShown(user: User) {
-    return user.vehiclePower > 100 ? true : false;
+  checkIfShown() {
+    return this.user.vehiclePower > 100 ? true : false;
+  }
+
+  setIsSelected(value: boolean) {
+    this.isSelected = value;
+
+    this.user.checkIfAdvisorDiscountShown();
+    this.user.getTotalPrice();
   }
 }

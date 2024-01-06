@@ -8,14 +8,23 @@ export class CommercialDiscount implements Discount {
   public percentageCostOf: string = "";
   public flatCost: number = 0;
   public isShown: boolean = true;
+  private user: User;
 
   constructor(user: User) {
-    this.setCosts(user);
+    this.user = user;
+    this.setCosts();
   }
 
-  setCosts(user: User) {
+  setCosts() {
     this.percentageCost = 10;
     this.percentageCostOf = "base price";
-    this.flatCost = user.basePrice * 0.01 * this.percentageCost;
+    this.flatCost = this.user.basePrice * 0.01 * this.percentageCost;
+  }
+
+  setIsSelected(value: boolean) {
+    this.isSelected = value;
+
+    this.user.checkIfAdvisorDiscountShown();
+    this.user.getTotalPrice();
   }
 }

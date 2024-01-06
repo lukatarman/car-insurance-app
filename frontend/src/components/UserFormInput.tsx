@@ -1,5 +1,5 @@
 import React from "react";
-import { UserFormInputType } from "./UserData.js";
+import { UserFormInputType } from "./UserData";
 
 const UserFormInput: React.FC<{ formValue: UserFormInputType; key: number }> = (
   { formValue },
@@ -17,7 +17,6 @@ const UserFormInput: React.FC<{ formValue: UserFormInputType; key: number }> = (
   };
 
   const handleInputChange = (e: any) => {
-    console.log(e.target.value);
     if (e.target.value) formValue.setInnerState(e.target.value);
   };
 

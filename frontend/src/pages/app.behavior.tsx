@@ -1,4 +1,4 @@
-import { useRecoilValue } from "recoil";
+import { useRecoilState, useRecoilValue, useSetRecoilState } from "recoil";
 import {
   userInputBirthdateValueState,
   userInputCityValueState,
@@ -8,6 +8,13 @@ import {
   userInputVoucherValueState,
 } from "../contexts/userFormInputContext";
 import { User } from "../models/users";
+import {
+  addUser,
+  changeCoverageStatus,
+  getUserByName,
+} from "../adapters/http.client.adapter";
+import { userDataState } from "../contexts/appContext";
+import { FormEvent, useEffect } from "react";
 
 function AppBehavior() {
   const nameInput = useRecoilValue(userInputNameValueState);
@@ -17,24 +24,47 @@ function AppBehavior() {
   const voucherInput = useRecoilValue(userInputVoucherValueState);
   const priceMatchInput = useRecoilValue(userInputPriceMatchValueState);
 
-  const handleFormSubmit = async (e: any) => {
+  const [userData, setUserData] = useRecoilState(userDataState);
+
+  useEffect(() => {
+    console.log("new data");
+    console.log(userData);
+  }, [userData]);
+
+  const handleFormSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
     const userObj = {
-      name: nameInput,
-      birthday: birthdateInput,
-      city: cityInput,
-      vehiclePower: vehiclePowerInput,
-      voucher: voucherInput,
-      priceMatch: priceMatchInput,
+      nameInput,
+      birthdateInput,
+      cityInput,
+      vehiclePowerInput,
+      voucherInput,
+      priceMatchInput,
     };
 
-    const user = new User(userObj);
+    const user = User.oneFromRawData(userObj);
 
-    console.log(user);
+    await addUser(user);
+
+    getNewData();
   };
 
-  return handleFormSubmit;
+  const getNewData = async () => {
+    const response: User = await getUserByName(nameInput);
+
+    console.log("response is:");
+    console.log(response);
+
+    setUserData(User.oneFromBackend(response));
+  };
+
+  const handleIsSelectedChange = async () => {
+    console.log("changed");
+    await getNewData();
+  };
+
+  return { handleFormSubmit, handleIsSelectedChange };
 }
 
 export default AppBehavior;

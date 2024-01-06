@@ -4,12 +4,12 @@ import CoveragesSidebar from "../components/CoveragesSidebar";
 import AppBehavior from "./app.behavior";
 
 function App() {
-  const handleFormSubmit = AppBehavior();
+  const { handleFormSubmit, handleIsSelectedChange } = AppBehavior();
 
   return (
     <div className="App">
       <form onSubmit={handleFormSubmit}>
-        <DiscountsHeader />
+        <DiscountsHeader handleIsSelectedChange={handleIsSelectedChange} />
         <div className="flex">
           <UserData />
           <CoveragesSidebar />

@@ -1,5 +1,5 @@
 import { ageSurcharges, cityPrices } from "../assets/base.price.data.mock.ts";
-import { Coverage, Discount, Surcharge } from "../types/types.ts";
+import { Coverage, Discount, DiscountNames, Surcharge } from "../types/types.ts";
 import { AOPlus } from "./coverages/ao.plus.ts";
 import { BonusProtection } from "./coverages/bonus.protection.ts";
 import { GlassProtection } from "./coverages/glass.protection.ts";
@@ -20,6 +20,7 @@ export class User {
   public coverages: Coverage[];
   public discounts: Discount[];
   public surcharges: Surcharge[];
+  public totalPrice: number;
 
   constructor(input: UserDTO) {
     this.name = input.name;
@@ -29,16 +30,22 @@ export class User {
     this.voucher = input.voucher || 0;
     this.priceMatch = input.priceMatch || 0;
     this.basePrice = this.getBasePrice();
-    this.coverages = this.addCoverages();
-    this.discounts = this.addDiscounts();
-    this.surcharges = this.addSurcharges();
+    this.coverages = this.addCoverages(input.coverages);
+    this.discounts = this.addDiscounts(input?.discounts);
+    this.surcharges = this.addSurcharges(input?.surcharges);
+    this.totalPrice = 0;
+    this.getTotalPrice();
   }
 
-  addCoverages() {
+  addCoverages(coverages: Coverage[] | undefined) {
+    if (coverages && coverages.length > 0) return coverages;
+
     return [new BonusProtection(this), new AOPlus(this), new GlassProtection(this)];
   }
 
-  addDiscounts() {
+  addDiscounts(discounts: Discount[] | undefined) {
+    if (discounts && discounts.length > 0) return discounts;
+
     return [
       new CommercialDiscount(this),
       new AdviserDiscount(this),
@@ -46,7 +53,9 @@ export class User {
     ];
   }
 
-  addSurcharges() {
+  addSurcharges(surcharges: Surcharge[] | undefined) {
+    if (surcharges && surcharges.length > 0) return surcharges;
+
     return [new StrongCarSurcharge(this)];
   }
 
@@ -75,7 +84,39 @@ export class User {
     );
   }
 
-  get totalPrice() {
-    return this.basePrice - this.voucher;
+  getTotalPrice() {
+    this.totalPrice = 5000;
+  }
+
+  checkIfAdvisorDiscountShown() {
+    const adviserDiscount = this.discounts.filter(
+      (discount) => discount.name === DiscountNames.adviser
+    )[0] as AdviserDiscount;
+
+    adviserDiscount.checkIfShown(this);
+  }
+
+  updateCoverageSelectedStatus(name: string) {
+    return this.coverages
+      .filter((coverage) => coverage.name === name)
+      .map((coverage) => {
+        return { ...coverage, isSelected: !coverage.isSelected };
+      })[0];
+  }
+
+  updateDiscountSelectedStatus(name: string) {
+    return this.discounts
+      .filter((discount) => discount.name === name)
+      .map((discount) => {
+        return { ...discount, isSelected: !discount.isSelected };
+      })[0];
+  }
+
+  updateSurchargeSelectedStatus(name: string) {
+    return this.surcharges
+      .filter((surcharge) => surcharge.name === name)
+      .map((surcharge) => {
+        return { ...surcharge, isSelected: !surcharge.isSelected };
+      })[0];
   }
 }
