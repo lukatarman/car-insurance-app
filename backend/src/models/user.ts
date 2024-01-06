@@ -34,17 +34,27 @@ export class User {
     this.discounts = this.addDiscounts(input?.discounts);
     this.surcharges = this.addSurcharges(input?.surcharges);
     this.totalPrice = 0;
-    this.getTotalPrice();
+    this.calculateTotalPrice();
   }
 
   addCoverages(coverages: Coverage[] | undefined) {
-    if (coverages && coverages.length > 0) return coverages;
+    if (coverages && coverages.length > 0)
+      return [
+        new BonusProtection(this, coverages[0]),
+        new AOPlus(this, coverages[1]),
+        new GlassProtection(this, coverages[2]),
+      ];
 
     return [new BonusProtection(this), new AOPlus(this), new GlassProtection(this)];
   }
 
   addDiscounts(discounts: Discount[] | undefined) {
-    if (discounts && discounts.length > 0) return discounts;
+    if (discounts && discounts.length > 0)
+      return [
+        new CommercialDiscount(this, discounts[0]),
+        new AdviserDiscount(this, discounts[1]),
+        new VIPDiscount(this, discounts[2]),
+      ];
 
     return [
       new CommercialDiscount(this),
@@ -84,8 +94,20 @@ export class User {
     );
   }
 
-  getTotalPrice() {
-    this.totalPrice = 5000;
+  calculateTotalPrice() {
+    let coverageCosts: number = 0;
+
+    this.coverages
+      .filter((coverage) => coverage.isSelected)
+      .forEach((coverage) => (coverageCosts += coverage.flatCost));
+    console.log("Coverage costs:");
+    console.log(coverageCosts);
+    // const discountCosts = this.discounts.map((discount) => discount.flatCost);
+
+    const totalPrice = this.basePrice + coverageCosts;
+    this.totalPrice = totalPrice;
+    console.log("total price:");
+    console.log(this.totalPrice);
   }
 
   checkIfAdvisorDiscountShown() {
@@ -96,27 +118,30 @@ export class User {
     adviserDiscount.checkIfShown(this);
   }
 
+  updatePriceAdjustmentSelectedStatus(name: string) {
+    this.updateCoverageSelectedStatus(name);
+    this.updateDiscountSelectedStatus(name);
+  }
+
   updateCoverageSelectedStatus(name: string) {
-    return this.coverages
-      .filter((coverage) => coverage.name === name)
-      .map((coverage) => {
-        return { ...coverage, isSelected: !coverage.isSelected };
-      })[0];
+    const matchingCoverage = this.coverages.filter(
+      (coverage) => coverage.name === name
+    )[0];
+
+    if (!matchingCoverage) return;
+    if (!matchingCoverage.setIsSelected) return;
+
+    matchingCoverage.setIsSelected(!matchingCoverage.isSelected, this);
   }
 
   updateDiscountSelectedStatus(name: string) {
-    return this.discounts
-      .filter((discount) => discount.name === name)
-      .map((discount) => {
-        return { ...discount, isSelected: !discount.isSelected };
-      })[0];
-  }
+    const matchingDiscount = this.discounts.filter(
+      (discount) => discount.name === name
+    )[0];
 
-  updateSurchargeSelectedStatus(name: string) {
-    return this.surcharges
-      .filter((surcharge) => surcharge.name === name)
-      .map((surcharge) => {
-        return { ...surcharge, isSelected: !surcharge.isSelected };
-      })[0];
+    if (!matchingDiscount) return;
+    if (!matchingDiscount.setIsSelected) return;
+
+    matchingDiscount.setIsSelected(!matchingDiscount.isSelected, this);
   }
 }

@@ -13,6 +13,7 @@ export interface Coverage {
   percentageCostOf: string;
   flatCost: number;
   setCosts: (user: User) => void;
+  setIsSelected?: (value: boolean, user: User) => void;
 }
 
 export enum DiscountNames {

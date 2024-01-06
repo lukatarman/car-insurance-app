@@ -3,25 +3,24 @@ import { User } from "../user.ts";
 
 export class AOPlus implements Coverage {
   public name: CoverageNames = CoverageNames.ao;
-  public isSelected: boolean = false;
+  public isSelected: boolean;
   public percentageCost: number = 0;
   public percentageCostOf: string = "";
   public flatCost: number = 0;
-  private user: User;
 
-  constructor(user: User) {
-    this.user = user;
-    this.setCosts();
+  constructor(user: User, coverage?: Coverage) {
+    this.setCosts(user);
+    this.isSelected = coverage?.isSelected || false;
   }
 
-  setCosts() {
-    this.flatCost = this.user.age < 30 ? 55 : 105;
+  setCosts(user: User) {
+    this.flatCost = user.age < 30 ? 55 : 105;
   }
 
-  setIsSelected(value: boolean) {
+  setIsSelected(value: boolean, user: User) {
     this.isSelected = value;
 
-    this.user.checkIfAdvisorDiscountShown();
-    this.user.getTotalPrice();
+    user.checkIfAdvisorDiscountShown();
+    user.calculateTotalPrice();
   }
 }

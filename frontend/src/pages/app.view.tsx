@@ -2,6 +2,7 @@ import DiscountsHeader from "../components/DiscountsHeader";
 import UserData from "../components/UserData";
 import CoveragesSidebar from "../components/CoveragesSidebar";
 import AppBehavior from "./app.behavior";
+import PriceInfo from "../components/PriceInfo";
 
 function App() {
   const { handleFormSubmit, handleIsSelectedChange } = AppBehavior();
@@ -12,9 +13,10 @@ function App() {
         <DiscountsHeader handleIsSelectedChange={handleIsSelectedChange} />
         <div className="flex">
           <UserData />
-          <CoveragesSidebar />
+          <CoveragesSidebar handleIsSelectedChange={handleIsSelectedChange} />
         </div>
       </form>
+      <PriceInfo />
     </div>
   );
 }

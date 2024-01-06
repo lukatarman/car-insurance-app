@@ -11,4 +11,5 @@ export interface UserDTO {
   coverages?: CoverageType[];
   discounts?: Discount[];
   surcharges?: Surcharge[];
+  totalPrice?: number;
 }

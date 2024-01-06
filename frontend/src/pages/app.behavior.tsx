@@ -8,11 +8,7 @@ import {
   userInputVoucherValueState,
 } from "../contexts/userFormInputContext";
 import { User } from "../models/users";
-import {
-  addUser,
-  changeCoverageStatus,
-  getUserByName,
-} from "../adapters/http.client.adapter";
+import { addUser, getUserByName } from "../adapters/http.client.adapter";
 import { userDataState } from "../contexts/appContext";
 import { FormEvent, useEffect } from "react";
 

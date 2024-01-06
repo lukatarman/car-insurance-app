@@ -3,29 +3,27 @@ import { User } from "../user.ts";
 
 export class AdviserDiscount implements Discount {
   public name: DiscountNames = DiscountNames.adviser;
-  public isSelected: boolean = false;
+  public isSelected: boolean;
   public percentageCost: number = 0;
   public percentageCostOf: string = "";
   public flatCost: number = 0;
   public isShown: boolean = false;
-  private user: User;
 
-  constructor(user: User) {
-    this.user = user;
-    this.setCosts();
-    this.checkIfShown();
+  constructor(user: User, discount?: Discount) {
+    this.setCosts(user);
+    this.checkIfShown(user);
+    this.isSelected = discount?.isSelected || false;
   }
 
-  setCosts() {
+  setCosts(user: User) {
     this.percentageCost = 10;
     this.percentageCostOf = "base price";
-    this.flatCost = this.user.vehiclePower * 0.01 * this.percentageCost;
+    this.flatCost = user.vehiclePower * 0.01 * this.percentageCost;
   }
 
-  checkIfShown() {
-    this.isShown = this.checkIfAtLeastTwoCoveragesSelected(this.user.coverages)
-      ? true
-      : false;
+  checkIfShown(user: User) {
+    this.isShown = this.checkIfAtLeastTwoCoveragesSelected(user.coverages) ? true : false;
+    if (!this.isShown) this.setIsSelected(false, user);
   }
 
   private checkIfAtLeastTwoCoveragesSelected(coverages: User["coverages"]): boolean {
@@ -33,9 +31,9 @@ export class AdviserDiscount implements Discount {
     return false;
   }
 
-  setIsSelected(value: boolean) {
+  setIsSelected(value: boolean, user: User) {
     this.isSelected = value;
 
-    this.user.getTotalPrice();
+    user.calculateTotalPrice();
   }
 }

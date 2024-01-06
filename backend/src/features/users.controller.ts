@@ -27,30 +27,11 @@ export class UsersController {
     return await this.dbClient.getOne(name);
   }
 
-  async updateCoverageSelectionStatus(name: string, data: Coverage) {
+  async updatePriceAdjustmentSelectionStatus(name: string, data: Coverage) {
     const user = await this.getOneUserByName(name);
 
-    const updatedCoverage = user.updateCoverageSelectedStatus(data.name);
+    user.updatePriceAdjustmentSelectedStatus(data.name);
 
-    return await this.dbClient.updateCoverageSelectionStatus(user.name, updatedCoverage);
-  }
-
-  async updateDiscountSelectionStatus(name: string, data: Coverage) {
-    const user = await this.getOneUserByName(name);
-
-    const updatedDiscount = user.updateDiscountSelectedStatus(data.name);
-
-    return await this.dbClient.updateDiscountSelectionStatus(user.name, updatedDiscount);
-  }
-
-  async updateSurchargeSelectionStatus(name: string, data: Coverage) {
-    const user = await this.getOneUserByName(name);
-
-    const updatedSurcharge = user.updateSurchargeSelectedStatus(data.name);
-
-    return await this.dbClient.updateSurchargeSelectionStatus(
-      user.name,
-      updatedSurcharge
-    );
+    await this.dbClient.replaceOneByName(name, user);
   }
 }

@@ -1,7 +1,6 @@
 import { MongoClient, WithId } from "mongodb";
 import { MongoMemoryServer } from "mongodb-memory-server";
 import { User } from "../models/user.ts";
-// import { Coverage } from "../types/types.ts";
 
 export class DatabaseClient {
   public collection: any = "";
@@ -33,42 +32,11 @@ export class DatabaseClient {
     return new User(await this.collection.findOne({ name }));
   }
 
-  async updateCoverageSelectionStatus(name: string, coverage: any) {
-    return await this.collection.updateOne(
-      { name: name, "coverages.name": coverage.name },
-      {
-        $set: {
-          "coverages.$.isSelected": true,
-        },
-      }
-    );
-  }
-
-  async updateDiscountSelectionStatus(name: string, discount: any) {
-    return await this.collection.updateOne(
-      { name: name, "discounts.name": discount.name },
-      {
-        $set: {
-          "discounts.$.isSelected": true,
-        },
-      }
-    );
-  }
-
-  async updateSurchargeSelectionStatus(name: string, surcharge: any) {
-    return await this.collection.updateOne(
-      { name: name, "surcharges.name": surcharge.name },
-      {
-        $set: {
-          "surcharges.$.isSelected": true,
-        },
-      }
-    );
+  async replaceOneByName(name: string, data: User) {
+    await this.collection.replaceOne({ name }, data);
   }
 
   stop(): void {
-    console.log("method ran");
     this.client.close();
-    console.log("method ran after");
   }
 }

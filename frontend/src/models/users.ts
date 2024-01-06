@@ -13,6 +13,7 @@ export class User {
   public coverages?: CoverageType[];
   public discounts?: Discount[];
   public surcharges?: Surcharge[];
+  public totalPrice?: number;
 
   constructor(input: User) {
     this.name = input.name;
@@ -25,6 +26,7 @@ export class User {
     this.coverages = input.coverages || [];
     this.discounts = input.discounts || [];
     this.surcharges = input.surcharges || [];
+    this.totalPrice = input.totalPrice || 0;
   }
 
   static oneWithEmptyValues = () => {
@@ -49,6 +51,7 @@ export class User {
       coverages: data.coverages || [],
       discounts: data.discounts || [],
       surcharges: data.surcharges || [],
+      totalPrice: data.totalPrice || 0,
     };
 
     return new User(userObj);
@@ -70,6 +73,7 @@ export class User {
       coverages: dataCopy.coverages || [],
       discounts: dataCopy.discounts || [],
       surcharges: dataCopy.surcharges || [],
+      totalPrice: data.totalPrice || 0,
     };
 
     return new User(userObj);

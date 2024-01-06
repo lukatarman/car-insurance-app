@@ -20,18 +20,16 @@ export async function getUserByName(name: string) {
   }
 }
 
-export async function changeCoverageStatus(name: string, data: CoverageType) {
+export async function changePriceAdjustmentSelectionStatus(
+  name: string,
+  data: CoverageType
+) {
   try {
-    const response = await httpClient.put(`/users/${name}/coverage`, data);
+    const response = await httpClient.put(
+      `/users/${name}/price-adjustment-selection`,
+      data
+    );
     return response.data;
-  } catch (err) {
-    console.log(err);
-  }
-}
-
-export async function changeDiscountSelectionStatus(name: string, data: Discount) {
-  try {
-    await httpClient.put(`/users/${name}/discounts`, data);
   } catch (err) {
     console.log(err);
   }

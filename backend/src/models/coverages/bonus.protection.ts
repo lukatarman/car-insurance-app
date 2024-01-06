@@ -3,27 +3,26 @@ import { User } from "../user.ts";
 
 export class BonusProtection implements Coverage {
   public name: CoverageNames = CoverageNames.protection;
-  public isSelected: boolean = false;
+  public isSelected: boolean;
   public percentageCost: number = 0;
   public percentageCostOf: string = "";
   public flatCost: number = 0;
-  private user: User;
 
-  constructor(user: User) {
-    this.user = user;
-    this.setCosts();
+  constructor(user: User, coverage?: Coverage) {
+    this.setCosts(user);
+    this.isSelected = coverage?.isSelected || false;
   }
 
-  setCosts() {
+  setCosts(user: User) {
     this.percentageCost = 12;
     this.percentageCostOf = "base price";
-    this.flatCost = this.user.basePrice * 0.01 * this.percentageCost;
+    this.flatCost = user.basePrice * 0.01 * this.percentageCost;
   }
 
-  setIsSelected(value: boolean) {
+  setIsSelected(value: boolean, user: User) {
     this.isSelected = value;
 
-    this.user.checkIfAdvisorDiscountShown();
-    this.user.getTotalPrice();
+    user.checkIfAdvisorDiscountShown();
+    user.calculateTotalPrice();
   }
 }

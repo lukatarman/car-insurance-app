@@ -3,33 +3,32 @@ import { User } from "../user.ts";
 
 export class VIPDiscount implements Discount {
   public name: DiscountNames = DiscountNames.vip;
-  public isSelected: boolean = false;
+  public isSelected: boolean;
   public percentageCost: number = 0;
   public percentageCostOf: string = "";
   public flatCost: number = 0;
   public isShown: boolean = false;
-  private user: User;
 
-  constructor(user: User) {
-    this.user = user;
-    this.setCosts();
-    this.isShown = this.checkIfShown();
+  constructor(user: User, discount?: Discount) {
+    this.setCosts(user);
+    this.isShown = this.checkIfShown(user);
+    this.isSelected = discount?.isSelected || false;
   }
 
-  setCosts() {
+  setCosts(user: User) {
     this.percentageCost = 5;
     this.percentageCostOf = "total price";
-    this.flatCost = this.user.totalPrice * 0.01 * this.percentageCost;
+    this.flatCost = user.totalPrice * 0.01 * this.percentageCost;
   }
 
-  checkIfShown() {
-    return this.user.vehiclePower > 100 ? true : false;
+  checkIfShown(user: User) {
+    return user.vehiclePower > 100 ? true : false;
   }
 
-  setIsSelected(value: boolean) {
+  setIsSelected(value: boolean, user: User) {
     this.isSelected = value;
 
-    this.user.checkIfAdvisorDiscountShown();
-    this.user.getTotalPrice();
+    user.checkIfAdvisorDiscountShown();
+    user.calculateTotalPrice();
   }
 }
