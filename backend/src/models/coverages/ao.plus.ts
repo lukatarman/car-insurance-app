@@ -1,4 +1,5 @@
 import { Coverage, CoverageNames } from "../../types/types.ts";
+import { getOneDecimalValue } from "../../utils/numbers.ts";
 import { User } from "../user.ts";
 
 export class AOPlus implements Coverage {
@@ -14,7 +15,7 @@ export class AOPlus implements Coverage {
   }
 
   setCosts(user: User) {
-    this.flatCost = user.age < 30 ? 55 : 105;
+    this.flatCost = getOneDecimalValue(user.age < 30 ? 55 : 105);
   }
 
   setIsSelected(value: boolean, user: User) {

@@ -1,4 +1,6 @@
 import { Discount, DiscountNames } from "../../types/types.ts";
+import { getOneDecimalValue } from "../../utils/numbers.ts";
+// import { getOneDecimalValue } from "../../utils/numbers.ts";
 import { User } from "../user.ts";
 
 export class VIPDiscount implements Discount {
@@ -10,15 +12,18 @@ export class VIPDiscount implements Discount {
   public isShown: boolean = false;
 
   constructor(user: User, discount?: Discount) {
-    this.setCosts(user);
+    this.setCosts();
     this.isShown = this.checkIfShown(user);
     this.isSelected = discount?.isSelected || false;
   }
 
-  setCosts(user: User) {
+  setCosts() {
     this.percentageCost = 5;
     this.percentageCostOf = "total price";
-    this.flatCost = user.totalPrice * 0.01 * this.percentageCost;
+  }
+
+  setFlatCost(price: number) {
+    this.flatCost = getOneDecimalValue(price * 0.01 * this.percentageCost);
   }
 
   checkIfShown(user: User) {

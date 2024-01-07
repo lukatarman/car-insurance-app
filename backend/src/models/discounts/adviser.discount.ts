@@ -1,4 +1,5 @@
 import { Discount, DiscountNames } from "../../types/types.ts";
+import { getOneDecimalValue } from "../../utils/numbers.ts";
 import { User } from "../user.ts";
 
 export class AdviserDiscount implements Discount {
@@ -16,9 +17,11 @@ export class AdviserDiscount implements Discount {
   }
 
   setCosts(user: User) {
-    this.percentageCost = 10;
-    this.percentageCostOf = "base price";
-    this.flatCost = user.vehiclePower * 0.01 * this.percentageCost;
+    this.percentageCost = 20;
+    this.percentageCostOf = "coverages";
+    this.flatCost = getOneDecimalValue(
+      user.totalCoverageCost * 0.01 * this.percentageCost
+    );
   }
 
   checkIfShown(user: User) {

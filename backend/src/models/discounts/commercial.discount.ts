@@ -1,4 +1,5 @@
 import { Discount, DiscountNames } from "../../types/types.ts";
+import { getOneDecimalValue } from "../../utils/numbers.ts";
 import { User } from "../user.ts";
 
 export class CommercialDiscount implements Discount {
@@ -17,7 +18,7 @@ export class CommercialDiscount implements Discount {
   setCosts(user: User) {
     this.percentageCost = 10;
     this.percentageCostOf = "base price";
-    this.flatCost = user.basePrice * 0.01 * this.percentageCost;
+    this.flatCost = getOneDecimalValue(user.basePrice * 0.01 * this.percentageCost);
   }
 
   setIsSelected(value: boolean, user: User) {

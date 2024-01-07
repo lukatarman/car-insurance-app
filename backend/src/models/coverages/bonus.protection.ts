@@ -1,4 +1,5 @@
 import { Coverage, CoverageNames } from "../../types/types.ts";
+import { getOneDecimalValue } from "../../utils/numbers.ts";
 import { User } from "../user.ts";
 
 export class BonusProtection implements Coverage {
@@ -16,7 +17,7 @@ export class BonusProtection implements Coverage {
   setCosts(user: User) {
     this.percentageCost = 12;
     this.percentageCostOf = "base price";
-    this.flatCost = user.basePrice * 0.01 * this.percentageCost;
+    this.flatCost = getOneDecimalValue(user.basePrice * 0.01 * this.percentageCost);
   }
 
   setIsSelected(value: boolean, user: User) {

@@ -20,6 +20,7 @@ export class User {
   public coverages: Coverage[];
   public discounts: Discount[];
   public surcharges: Surcharge[];
+  public totalCoverageCost: number = 0;
   public totalPrice: number;
 
   constructor(input: UserDTO) {
@@ -30,11 +31,13 @@ export class User {
     this.voucher = input.voucher || 0;
     this.priceMatch = input.priceMatch || 0;
     this.basePrice = this.getBasePrice();
-    this.coverages = this.addCoverages(input.coverages);
+    this.coverages = this.addCoverages(input?.coverages);
+    this.totalCoverageCost = this.calculateTotalPriceAdjustment(this.coverages);
     this.discounts = this.addDiscounts(input?.discounts);
     this.surcharges = this.addSurcharges(input?.surcharges);
     this.totalPrice = 0;
     this.calculateTotalPrice();
+    this.vipDiscount?.setFlatCost(this.totalPrice);
   }
 
   addCoverages(coverages: Coverage[] | undefined) {
@@ -95,19 +98,43 @@ export class User {
   }
 
   calculateTotalPrice() {
-    let coverageCosts: number = 0;
+    const totalSurchargeCost = this.calculateTotalPriceAdjustment(this.surcharges);
+    const totalSavedViaDiscounts = this.calculateTotalPriceAdjustment(this.discounts);
 
-    this.coverages
-      .filter((coverage) => coverage.isSelected)
-      .forEach((coverage) => (coverageCosts += coverage.flatCost));
-    console.log("Coverage costs:");
-    console.log(coverageCosts);
-    // const discountCosts = this.discounts.map((discount) => discount.flatCost);
+    let totalPrice =
+      this.basePrice +
+      this.totalCoverageCost +
+      totalSurchargeCost -
+      totalSavedViaDiscounts -
+      this.voucher;
 
-    const totalPrice = this.basePrice + coverageCosts;
-    this.totalPrice = totalPrice;
-    console.log("total price:");
-    console.log(this.totalPrice);
+    const adjustedTotalPrice = this.addAdditionalTotalPriceAdjustments(totalPrice);
+
+    this.totalPrice = adjustedTotalPrice;
+  }
+
+  calculateTotalPriceAdjustment(adjustment: Coverage[] | Discount[] | Surcharge[]) {
+    if (!adjustment) return 0;
+
+    return adjustment.reduce((accumulator, currentValue) => {
+      if (!currentValue.isSelected) return accumulator;
+      if (currentValue.name === DiscountNames.vip) return accumulator;
+
+      return accumulator + currentValue.flatCost;
+    }, 0);
+  }
+
+  addAdditionalTotalPriceAdjustments(price: number) {
+    if (this.vipDiscount?.isSelected) return price - this.vipDiscount.flatCost;
+    return price;
+  }
+
+  get vipDiscount() {
+    if (!this.discounts) return;
+
+    return this.discounts.find((discount) => discount.name === DiscountNames.vip) as
+      | VIPDiscount
+      | undefined;
   }
 
   checkIfAdvisorDiscountShown() {
