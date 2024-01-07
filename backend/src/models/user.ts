@@ -1,5 +1,6 @@
 import { ageSurcharges, cityPrices } from "../assets/base.price.data.mock.ts";
 import { Coverage, Discount, DiscountNames, Surcharge } from "../types/types.ts";
+import { getOneDecimalValue } from "../utils/numbers.ts";
 import { AOPlus } from "./coverages/ao.plus.ts";
 import { BonusProtection } from "./coverages/bonus.protection.ts";
 import { GlassProtection } from "./coverages/glass.protection.ts";
@@ -105,12 +106,11 @@ export class User {
       this.basePrice +
       this.totalCoverageCost +
       totalSurchargeCost -
-      totalSavedViaDiscounts -
-      this.voucher;
+      totalSavedViaDiscounts;
 
     const adjustedTotalPrice = this.addAdditionalTotalPriceAdjustments(totalPrice);
 
-    this.totalPrice = adjustedTotalPrice;
+    this.totalPrice = getOneDecimalValue(adjustedTotalPrice - this.voucher);
   }
 
   calculateTotalPriceAdjustment(adjustment: Coverage[] | Discount[] | Surcharge[]) {

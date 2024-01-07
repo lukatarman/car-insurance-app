@@ -72,8 +72,18 @@ const PriceInfo = () => {
     });
   };
 
+  const renderVoucher = () => {
+    if (!userData.voucher) return;
+    return (
+      <div className="flex justify-between">
+        <div>Voucher:</div>
+        <div className="font-normal">-{userData.voucher} EUR</div>
+      </div>
+    );
+  };
+
   return (
-    <div className="p-8 bg-gray-200 w-1/2  lg:w-1/4 flex flex-col justify-between font-semibold text-sm">
+    <div className="p-8 bg-gray-200 w-1/2 xl:w-1/3 flex flex-col justify-between font-semibold text-sm">
       <div className="flex justify-between">
         <div>Base price:</div>
         <div className="font-normal">{userData.basePrice} EUR</div>
@@ -81,6 +91,7 @@ const PriceInfo = () => {
       {renderCoverages()}
       {renderSurcharges()}
       {renderDiscounts()}
+      {renderVoucher()}
       <div className="flex justify-between">
         <div>Total price:</div>
         <div className="font-normal">{userData.totalPrice} EUR</div>
