@@ -1,5 +1,5 @@
 import { Discount, SurchargeNames } from "../../types/types.ts";
-import { getOneDecimalValue } from "../../utils/numbers.ts";
+import { getDecimalValue } from "../../utils/numbers.ts";
 import { User } from "../user.ts";
 
 export class StrongCarSurcharge implements Discount {
@@ -18,12 +18,21 @@ export class StrongCarSurcharge implements Discount {
   setCosts(user: User) {
     this.percentageCost = 10;
     this.percentageCostOf = "base price";
-    this.flatCost = getOneDecimalValue(user.vehiclePower * 0.01 * this.percentageCost);
+    this.flatCost = this.getRegularFlatCost(user);
+  }
+
+  setFlatCost(cost: number) {
+    this.flatCost = cost;
+  }
+
+  getRegularFlatCost(user: User) {
+    return getDecimalValue(user.getBasePrice() * 0.01 * this.percentageCost);
   }
 
   checkIfApplied(user: User) {
     this.isShown = this.isVehiclePowerOver100(user);
     this.isSelected = this.isVehiclePowerOver100(user);
+    this.setFlatCost(this.getRegularFlatCost(user));
   }
 
   private isVehiclePowerOver100(user: User) {

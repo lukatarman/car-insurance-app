@@ -1,5 +1,5 @@
 import { Discount, DiscountNames } from "../../types/types.ts";
-import { getOneDecimalValue } from "../../utils/numbers.ts";
+import { getDecimalValue } from "../../utils/numbers.ts";
 import { User } from "../user.ts";
 
 export class AdviserDiscount implements Discount {
@@ -19,14 +19,20 @@ export class AdviserDiscount implements Discount {
   setCosts(user: User) {
     this.percentageCost = 20;
     this.percentageCostOf = "coverages";
-    this.flatCost = getOneDecimalValue(
-      user.totalCoverageCost * 0.01 * this.percentageCost
-    );
+    this.flatCost = this.getRegularFlatCost(user);
+  }
+
+  getRegularFlatCost(user: User) {
+    return getDecimalValue(user.totalCoverageCost * 0.01 * this.percentageCost);
+  }
+
+  setFlatCost(cost: number) {
+    this.flatCost = cost;
   }
 
   checkIfShown(user: User) {
     this.isShown = this.checkIfAtLeastTwoCoveragesSelected(user.coverages) ? true : false;
-    if (!this.isShown) this.setIsSelected(false, user);
+    if (!this.isShown) this.isSelected = false;
   }
 
   private checkIfAtLeastTwoCoveragesSelected(coverages: User["coverages"]): boolean {
@@ -36,6 +42,7 @@ export class AdviserDiscount implements Discount {
 
   setIsSelected(value: boolean, user: User) {
     this.isSelected = value;
+    this.setFlatCost(this.getRegularFlatCost(user));
 
     user.calculateTotalPrice();
   }

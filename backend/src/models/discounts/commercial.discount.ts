@@ -1,5 +1,5 @@
 import { Discount, DiscountNames } from "../../types/types.ts";
-import { getOneDecimalValue } from "../../utils/numbers.ts";
+import { getDecimalValue } from "../../utils/numbers.ts";
 import { User } from "../user.ts";
 
 export class CommercialDiscount implements Discount {
@@ -18,11 +18,20 @@ export class CommercialDiscount implements Discount {
   setCosts(user: User) {
     this.percentageCost = 10;
     this.percentageCostOf = "base price";
-    this.flatCost = getOneDecimalValue(user.basePrice * 0.01 * this.percentageCost);
+    this.flatCost = this.getRegularFlatCost(user);
+  }
+
+  setFlatCost(cost: number) {
+    this.flatCost = cost;
+  }
+
+  getRegularFlatCost(user: User) {
+    return getDecimalValue(user.getBasePrice() * 0.01 * this.percentageCost);
   }
 
   setIsSelected(value: boolean, user: User) {
     this.isSelected = value;
+    this.setFlatCost(this.getRegularFlatCost(user));
 
     user.checkIfAdvisorDiscountShown();
     user.calculateTotalPrice();

@@ -50,8 +50,9 @@ const DiscountsHeader: FC<DiscountsHeaderProps> = ({ handleIsSelectedChange }) =
           {renderAdjustments(userData.discounts)}
           {renderAdjustments(userData.surcharges)}
         </div>
-        <div className="m-2 flex">
-          <div className="m-2 p-2">{userData.totalPrice}</div>
+        <div className="m-2 flex flex-col">
+          <div className="p-2">Total price: </div>
+          <div className="self-end">{userData.totalPrice} EUR</div>
         </div>
       </div>
     </div>

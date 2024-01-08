@@ -1,5 +1,5 @@
 import { Coverage, CoverageNames } from "../../types/types.ts";
-import { getOneDecimalValue } from "../../utils/numbers.ts";
+import { getDecimalValue } from "../../utils/numbers.ts";
 import { User } from "../user.ts";
 
 export class GlassProtection implements Coverage {
@@ -17,11 +17,22 @@ export class GlassProtection implements Coverage {
   setCosts(user: User) {
     this.percentageCost = 80;
     this.percentageCostOf = "vehicle power";
-    this.flatCost = getOneDecimalValue(user.vehiclePower * 0.01 * this.percentageCost);
+    this.flatCost = this.getRegularFlatCost(user);
+  }
+
+  setFlatCost(cost: number) {
+    this.flatCost = cost;
+  }
+
+  getRegularFlatCost(user: User) {
+    return getDecimalValue(user.vehiclePower * 0.01 * this.percentageCost);
   }
 
   setIsSelected(value: boolean, user: User) {
     this.isSelected = value;
+    console.log("VEHICLE POWER:");
+    console.log(user.vehiclePower);
+    this.setFlatCost(this.getRegularFlatCost(user));
 
     user.checkIfAdvisorDiscountShown();
     user.calculateTotalPrice();

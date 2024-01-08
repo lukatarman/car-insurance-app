@@ -1,6 +1,6 @@
 import { Discount, DiscountNames } from "../../types/types.ts";
-import { getOneDecimalValue } from "../../utils/numbers.ts";
-// import { getOneDecimalValue } from "../../utils/numbers.ts";
+import { getDecimalValue } from "../../utils/numbers.ts";
+// import { getDecimalValue } from "../../utils/numbers.ts";
 import { User } from "../user.ts";
 
 export class VIPDiscount implements Discount {
@@ -22,16 +22,21 @@ export class VIPDiscount implements Discount {
     this.percentageCostOf = "total price";
   }
 
-  setFlatCost(price: number) {
-    this.flatCost = getOneDecimalValue(price * 0.01 * this.percentageCost);
+  calculateFlatCost(totalPrice: number) {
+    this.flatCost = getDecimalValue(totalPrice * 0.01 * this.percentageCost);
+  }
+
+  setFlatCost(cost: number) {
+    this.flatCost = cost;
   }
 
   checkIfShown(user: User) {
-    return user.vehiclePower > 100 ? true : false;
+    return user.vehiclePower > 80 ? true : false;
   }
 
   setIsSelected(value: boolean, user: User) {
     this.isSelected = value;
+    this.setFlatCost(user.totalPrice);
 
     user.checkIfAdvisorDiscountShown();
     user.calculateTotalPrice();
