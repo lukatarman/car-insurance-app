@@ -1,4 +1,4 @@
-import { useRecoilState, useRecoilValue, useSetRecoilState } from "recoil";
+import { useRecoilState, useRecoilValue } from "recoil";
 import {
   userInputBirthdateValueState,
   userInputCityValueState,
@@ -8,7 +8,12 @@ import {
   userInputVoucherValueState,
 } from "../contexts/userFormInputContext";
 import { User } from "../models/users";
-import { addUser, getAllUsers, getUserByName } from "../adapters/http.client.adapter";
+import {
+  addUser,
+  getAllUsers,
+  getUserByName,
+  updateUser,
+} from "../adapters/http.client.adapter";
 import { userDataState } from "../contexts/appContext";
 import { FormEvent, useEffect } from "react";
 
@@ -44,7 +49,9 @@ function AppBehavior() {
 
     const user = User.oneFromRawData(userObj);
 
-    await addUser(user);
+    const response = await getUserByName(user.name);
+
+    response ? await updateUser(user) : await addUser(user);
 
     getNewData();
   };

@@ -29,7 +29,7 @@ const PriceInfo = () => {
   const renderSurcharges = () => {
     if (!userData.surcharges) return;
 
-    return userData.surcharges.map((surcharge) => {
+    return userData.surcharges.map((surcharge, index) => {
       if (!surcharge.isSelected) return;
 
       const percentageCostOf = surcharge.percentageCost
@@ -37,7 +37,7 @@ const PriceInfo = () => {
         : "";
 
       return (
-        <div className="flex justify-between">
+        <div className="flex justify-between" key={index}>
           <div>
             {surcharge.name} <span className="font-normal">{percentageCostOf}:</span>
           </div>

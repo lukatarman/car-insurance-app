@@ -28,8 +28,12 @@ export class DatabaseClient {
     return await this.collection.find().toArray();
   }
 
-  async getOne(name: string): Promise<User> {
-    return new User(await this.collection.findOne({ name }));
+  async getOne(name: string): Promise<User | null> {
+    const user = await this.collection.findOne({ name });
+
+    if (!user) return null;
+
+    return new User(user);
   }
 
   async replaceOneByName(name: string, data: User): Promise<void> {

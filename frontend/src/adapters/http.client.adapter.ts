@@ -29,6 +29,15 @@ export async function getUserByName(name: string) {
   }
 }
 
+export async function updateUser(user: User) {
+  try {
+    const response = await httpClient.put(`/users/${user.name}/update`, user);
+    return response.data;
+  } catch (err) {
+    console.log(err);
+  }
+}
+
 export async function changePriceAdjustmentSelectionStatus(
   name: string,
   data: CoverageType

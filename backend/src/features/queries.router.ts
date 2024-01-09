@@ -2,6 +2,7 @@ import { FastifyInstance, FastifyRequest } from "fastify";
 import { UsersController } from "./users.controller.ts";
 import { UserDTO } from "../models/user.dto.ts";
 import { Coverage } from "../models/types.ts";
+import { User } from "../models/user.ts";
 
 export class QueriesRouter {
   private controller: UsersController;
@@ -40,6 +41,16 @@ export class QueriesRouter {
         const data = request.body as Coverage;
 
         return this.controller.updatePriceAdjustmentSelectionStatus(name, data);
+      }
+    );
+
+    server.put(
+      "/users/:name/update",
+      async (request: FastifyRequest<{ Params: { name: string } }>) => {
+        const name = request.params.name;
+        const data = request.body as User;
+
+        return this.controller.updateUser(name, data);
       }
     );
   };

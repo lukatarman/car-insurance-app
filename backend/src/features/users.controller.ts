@@ -21,7 +21,7 @@ export class UsersController {
     return await this.dbClient.getAll();
   }
 
-  async getOneUserByName(name: string): Promise<User> {
+  async getOneUserByName(name: string): Promise<User | null> {
     return await this.dbClient.getOne(name);
   }
 
@@ -30,9 +30,17 @@ export class UsersController {
     data: Coverage
   ): Promise<void> {
     const user = await this.getOneUserByName(name);
+    if (!user) return;
 
     user.updatePriceAdjustmentSelectedStatus(data.name);
 
     await this.dbClient.replaceOneByName(name, user);
+  }
+
+  async updateUser(name: string, data: User) {
+    const user = await this.getOneUserByName(name);
+    if (!user) return;
+
+    await this.dbClient.replaceOneByName(name, data);
   }
 }
