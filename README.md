@@ -3,7 +3,9 @@
 ## Running the application
 
 To run the application, open two separate terminals.
+
 In the first terminal, navigate into root/backend. Run `npm install`, followed by `npm start`. 
+
 In the second terminal, navigate into root/frontend. Run `npm install`, followed by `npm start`.
 
 ## Checking the database values
