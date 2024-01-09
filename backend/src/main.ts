@@ -1,4 +1,4 @@
-import { QueriesRouter } from "./features/router.ts";
+import { QueriesRouter } from "./features/queries.router.ts";
 import { UsersController } from "./features/users.controller.ts";
 import { DatabaseClient } from "./infrastructure/database.client.ts";
 import { WebServer } from "./infrastructure/web.server.ts";

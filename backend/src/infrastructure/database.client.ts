@@ -32,7 +32,7 @@ export class DatabaseClient {
     return new User(await this.collection.findOne({ name }));
   }
 
-  async replaceOneByName(name: string, data: User) {
+  async replaceOneByName(name: string, data: User): Promise<void> {
     await this.collection.replaceOne({ name }, data);
   }
 

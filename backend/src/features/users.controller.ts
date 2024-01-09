@@ -25,7 +25,10 @@ export class UsersController {
     return await this.dbClient.getOne(name);
   }
 
-  async updatePriceAdjustmentSelectionStatus(name: string, data: Coverage) {
+  async updatePriceAdjustmentSelectionStatus(
+    name: string,
+    data: Coverage
+  ): Promise<void> {
     const user = await this.getOneUserByName(name);
 
     user.updatePriceAdjustmentSelectedStatus(data.name);

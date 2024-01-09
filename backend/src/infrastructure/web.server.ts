@@ -1,6 +1,6 @@
 import Fastify, { FastifyPluginCallback } from "fastify";
 import cors, { FastifyCorsOptions } from "@fastify/cors";
-import { QueriesRouter } from "../features/router.ts";
+import { QueriesRouter } from "../features/queries.router.ts";
 
 export class WebServer {
   private server: Fastify.FastifyInstance;
