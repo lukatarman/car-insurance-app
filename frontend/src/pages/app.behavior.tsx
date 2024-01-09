@@ -1,4 +1,4 @@
-import { useRecoilState, useRecoilValue } from "recoil";
+import { useRecoilState, useRecoilValue, useSetRecoilState } from "recoil";
 import {
   userInputBirthdateValueState,
   userInputCityValueState,
@@ -8,7 +8,7 @@ import {
   userInputVoucherValueState,
 } from "../contexts/userFormInputContext";
 import { User } from "../models/users";
-import { addUser, getUserByName } from "../adapters/http.client.adapter";
+import { addUser, getAllUsers, getUserByName } from "../adapters/http.client.adapter";
 import { userDataState } from "../contexts/appContext";
 import { FormEvent, useEffect } from "react";
 
@@ -23,8 +23,11 @@ function AppBehavior() {
   const [userData, setUserData] = useRecoilState(userDataState);
 
   useEffect(() => {
-    console.log("new data");
-    console.log(userData);
+    const getDbData = async () => {
+      console.log(await getAllUsers());
+    };
+
+    getDbData();
   }, [userData]);
 
   const handleFormSubmit = async (e: FormEvent<HTMLFormElement>) => {
@@ -48,9 +51,6 @@ function AppBehavior() {
 
   const getNewData = async () => {
     const response: User = await getUserByName(nameInput);
-
-    console.log("response is:");
-    console.log(response);
 
     setUserData(User.oneFromBackend(response));
   };

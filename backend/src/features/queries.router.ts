@@ -21,6 +21,11 @@ export class QueriesRouter {
       }
     );
 
+    server.get("/users/all", async () => {
+      const response = await this.controller.getAllUsers();
+      return response;
+    });
+
     server.post("/users", async (request) => {
       const data: UserDTO = request.body as UserDTO;
       const newUser = await this.controller.insertOneUser(data);

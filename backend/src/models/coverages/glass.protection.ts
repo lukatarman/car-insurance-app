@@ -38,8 +38,6 @@ export class GlassProtection implements Coverage {
 
   setIsSelected(value: boolean, user: User) {
     this.isSelected = value;
-    console.log("VEHICLE POWER:");
-    console.log(user.vehiclePower);
     this.setFlatCost(this.getRegularFlatCost(user));
 
     user.checkIfAdvisorDiscountShown();

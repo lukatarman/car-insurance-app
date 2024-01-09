@@ -59,8 +59,6 @@ export class User {
 
   static oneFromBackend = (data: User) => {
     const dataCopy = { ...data };
-    console.log("data copy:");
-    console.log(dataCopy);
 
     const userObj = {
       name: dataCopy.name,

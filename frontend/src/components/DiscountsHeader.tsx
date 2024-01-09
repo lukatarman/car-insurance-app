@@ -16,10 +16,6 @@ const DiscountsHeader: FC<DiscountsHeaderProps> = ({ handleIsSelectedChange }) =
     handleIsSelectedChange();
   };
 
-  useEffect(() => {
-    console.log(userData);
-  }, [userData]);
-
   const renderAdjustments = (adjustments: Discount[] | Surcharge[] | undefined) => {
     if (!adjustments) return;
 

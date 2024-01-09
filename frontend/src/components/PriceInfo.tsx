@@ -1,18 +1,14 @@
 import { useEffect } from "react";
-import { useRecoilState } from "recoil";
+import { useRecoilValue } from "recoil";
 import { userDataState } from "../contexts/appContext";
 
 const PriceInfo = () => {
-  const [userData, setUserData] = useRecoilState(userDataState);
-
-  useEffect(() => {
-    console.log(userData);
-  }, [userData]);
+  const userData = useRecoilValue(userDataState);
 
   const renderCoverages = () => {
     if (!userData.coverages) return;
 
-    return userData.coverages.map((coverage) => {
+    return userData.coverages.map((coverage, index) => {
       if (!coverage.isSelected) return;
 
       const percentageCostOf = coverage.percentageCost
@@ -20,7 +16,7 @@ const PriceInfo = () => {
         : "";
 
       return (
-        <div className="flex justify-between">
+        <div className="flex justify-between" key={index}>
           <div>
             {coverage.name} <span className="font-normal">{percentageCostOf}:</span>
           </div>
@@ -54,7 +50,7 @@ const PriceInfo = () => {
   const renderDiscounts = () => {
     if (!userData.discounts) return;
 
-    return userData.discounts.map((discount) => {
+    return userData.discounts.map((discount, index) => {
       if (!discount.isSelected) return;
 
       const percentageCostOf = discount.percentageCost
@@ -62,7 +58,7 @@ const PriceInfo = () => {
         : "";
 
       return (
-        <div className="flex justify-between">
+        <div className="flex justify-between" key={index}>
           <div>
             {discount.name} <span className="font-normal">{percentageCostOf}:</span>
           </div>
