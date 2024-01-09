@@ -1,6 +1,7 @@
 import { Discount, DiscountNames } from "../types.ts";
 import { getDecimalValue } from "../../utils/numbers.ts";
 import { User } from "../user.ts";
+import { UserDTO } from "../user.dto.ts";
 
 export class AdviserDiscount implements Discount {
   public name: DiscountNames = DiscountNames.adviser;
@@ -10,10 +11,17 @@ export class AdviserDiscount implements Discount {
   public flatCost: number = 0;
   public isShown: boolean = false;
 
-  constructor(user: User, discount?: Discount) {
+  constructor(user: User, input: UserDTO) {
     this.setCosts(user);
     this.checkIfShown(user);
-    this.isSelected = discount?.isSelected || false;
+    this.isSelected = this.checkIfSelected(input);
+  }
+
+  checkIfSelected(input: UserDTO) {
+    const discounts = input.discounts;
+    if (!discounts || discounts.length === 0) return false;
+
+    return discounts.filter((discount) => discount.name === this.name)[0].isSelected;
   }
 
   setCosts(user: User) {

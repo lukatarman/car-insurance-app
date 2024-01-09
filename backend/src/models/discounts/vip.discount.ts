@@ -1,7 +1,7 @@
 import { Discount, DiscountNames } from "../types.ts";
 import { getDecimalValue } from "../../utils/numbers.ts";
-// import { getDecimalValue } from "../../utils/numbers.ts";
 import { User } from "../user.ts";
+import { UserDTO } from "../user.dto.ts";
 
 export class VIPDiscount implements Discount {
   public name: DiscountNames = DiscountNames.vip;
@@ -11,15 +11,22 @@ export class VIPDiscount implements Discount {
   public flatCost: number = 0;
   public isShown: boolean = false;
 
-  constructor(user: User, discount?: Discount) {
+  constructor(user: User, input: UserDTO) {
     this.setCosts();
     this.isShown = this.checkIfShown(user);
-    this.isSelected = discount?.isSelected || false;
+    this.isSelected = this.checkIfSelected(input);
   }
 
   setCosts() {
     this.percentageCost = 5;
     this.percentageCostOf = "total price";
+  }
+
+  checkIfSelected(input: UserDTO) {
+    const discounts = input.discounts;
+    if (!discounts || discounts.length === 0) return false;
+
+    return discounts.filter((discount) => discount.name === this.name)[0].isSelected;
   }
 
   calculateFlatCost(totalPrice: number) {

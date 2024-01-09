@@ -13,6 +13,7 @@ export interface Coverage {
   percentageCostOf: string;
   flatCost: number;
   setCosts: (user: User) => void;
+  checkIfSelected?: (user: User) => boolean;
   setFlatCost: (price: number) => void;
   getRegularFlatCost?: (user: User) => number;
   setIsSelected?: (value: boolean, user: User) => void;

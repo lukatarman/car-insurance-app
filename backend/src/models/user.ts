@@ -37,44 +37,32 @@ export class User {
     this.voucher = input.voucher || 0;
     this.priceMatch = input.priceMatch || 0;
     this.basePrice = this.getBasePrice();
-    this.coverages = this.addCoverages(input?.coverages);
+    this.coverages = this.addCoverages(input);
     this.totalCoverageCost = addValues(this.getFlatAdjustmentPrices(this.coverages));
-    this.discounts = this.addDiscounts(input?.discounts);
-    this.surcharges = this.addSurcharges(input?.surcharges);
+    this.discounts = this.addDiscounts(input);
+    this.surcharges = this.addSurcharges();
     this.totalPrice = 0;
     this.calculateTotalPrice();
     this.vipDiscount?.calculateFlatCost(this.totalPrice);
   }
 
-  addCoverages(coverages: Coverage[] | undefined) {
-    if (coverages && coverages.length > 0)
-      return [
-        new BonusProtection(this, coverages[0]),
-        new AOPlus(this, coverages[1]),
-        new GlassProtection(this, coverages[2]),
-      ];
-
-    return [new BonusProtection(this), new AOPlus(this), new GlassProtection(this)];
-  }
-
-  addDiscounts(discounts: Discount[] | undefined) {
-    if (discounts && discounts.length > 0)
-      return [
-        new CommercialDiscount(this, discounts[0]),
-        new AdviserDiscount(this, discounts[1]),
-        new VIPDiscount(this, discounts[2]),
-      ];
-
+  addCoverages(input: UserDTO) {
     return [
-      new CommercialDiscount(this),
-      new AdviserDiscount(this),
-      new VIPDiscount(this),
+      new BonusProtection(this, input),
+      new AOPlus(this, input),
+      new GlassProtection(this, input),
     ];
   }
 
-  addSurcharges(surcharges: Surcharge[] | undefined) {
-    if (surcharges && surcharges.length > 0) return [new StrongCarSurcharge(this)];
+  addDiscounts(input: UserDTO) {
+    return [
+      new CommercialDiscount(this, input),
+      new AdviserDiscount(this, input),
+      new VIPDiscount(this, input),
+    ];
+  }
 
+  addSurcharges() {
     return [new StrongCarSurcharge(this)];
   }
 
