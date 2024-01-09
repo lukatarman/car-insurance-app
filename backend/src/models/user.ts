@@ -1,7 +1,7 @@
 import { ageSurcharges, cityPrices } from "../assets/base.price.data.mock.ts";
 import { Coverage, Discount, DiscountNames, Surcharge } from "./types.ts";
 import {
-  addValues,
+  addArrayValues,
   adjustValuesProportionally,
   getDecimalValue,
   getPercentageOf,
@@ -38,7 +38,7 @@ export class User {
     this.priceMatch = input.priceMatch || 0;
     this.basePrice = this.getBasePrice();
     this.coverages = this.addCoverages(input);
-    this.totalCoverageCost = addValues(this.getFlatAdjustmentPrices(this.coverages));
+    this.totalCoverageCost = addArrayValues(this.getFlatAdjustmentPrices(this.coverages));
     this.discounts = this.addDiscounts(input);
     this.surcharges = this.addSurcharges();
     this.totalPrice = 0;
@@ -67,9 +67,7 @@ export class User {
   }
 
   getBasePrice() {
-    const cityPrice = this.cityPrice;
-
-    return cityPrice + cityPrice * 0.01 * this.ageSurcharge;
+    return this.cityPrice + this.cityPrice * 0.01 * this.ageSurcharge;
   }
 
   private get cityPrice() {
@@ -98,18 +96,8 @@ export class User {
     const surchargeCosts = this.getFlatAdjustmentPrices(this.surcharges);
     const discountCosts = this.getFlatAdjustmentPrices(this.discounts);
 
-    const totalSurchargeCost = addValues(surchargeCosts);
-    const totalSavedViaDiscounts = addValues(discountCosts);
-
-    console.log("COSTS");
-    console.log(this.basePrice);
-    console.log(coverageCosts);
-    console.log(surchargeCosts);
-    console.log(discountCosts);
-    console.log(totalSurchargeCost);
-    console.log(totalSavedViaDiscounts);
-    console.log(this.totalCoverageCost);
-    console.log("test");
+    const totalSurchargeCost = addArrayValues(surchargeCosts);
+    const totalSavedViaDiscounts = addArrayValues(discountCosts);
 
     let totalPrice =
       this.basePrice +
@@ -118,23 +106,48 @@ export class User {
       totalSavedViaDiscounts;
 
     this.totalPrice = this.applyVipPriceAdjustments(totalPrice);
-    console.log("pre recalculate total price:");
-    console.log(totalPrice);
 
     const updatedDiscountCosts = this.getFlatAdjustmentPrices(this.discounts);
-    // console.log("User:");
-    // console.log(this);
-    console.log("updated Discount COSTS");
-    console.log(updatedDiscountCosts);
 
     if (this.priceMatch)
-      this.recalculateValues(coverageCosts, surchargeCosts, updatedDiscountCosts);
+      this.modifyTotalPriceBasedOnPrinceMatch(
+        coverageCosts,
+        surchargeCosts,
+        updatedDiscountCosts
+      );
 
-    // if (this.voucher) price -= this.voucher;
-    // if (price <= 0) price = 0;
+    if (this.voucher) this.totalPrice -= this.voucher;
+    if (this.totalPrice <= 0) this.totalPrice = 0;
   }
 
-  recalculateValues(
+  getFlatAdjustmentPrices(adjustment: Coverage[] | Discount[] | Surcharge[]) {
+    if (!adjustment) return [0];
+
+    return adjustment.map((adjustment) => {
+      if (!adjustment.isSelected) return 0;
+
+      return adjustment.flatCost;
+    });
+  }
+
+  applyVipPriceAdjustments(totalPrice: number) {
+    this.vipDiscount?.calculateFlatCost(totalPrice);
+
+    if (this.vipDiscount?.isSelected) totalPrice -= this.vipDiscount.flatCost;
+
+    return getDecimalValue(totalPrice);
+  }
+
+  // A note about this feature. I initially didn't understand what the purpose/function of price match is. I sent a clarifying e-mail, and got an explanation.
+  // I, however still wasn't 100% sure of what the exact functionality, in terms of a couple of details. Normally, in an employment position, I would of course
+  // clarify and get more information, so that the implementation would be accure. But since this is just an assignment I didn't want to pester you guys
+  // and waste too much of your time, so I ended up implementing my interpretation of it. The way I understood it is this:
+  // When you enter a value into price match, the total price needs to equal the value entered into price match.
+  // But the way to achieve this new value needs to be done so that every single price modifier needs to change also, so that the result equals price match.
+  // I ended up also applying proportionate values, so percentage of total change to each of the modifiers, excluding voucher, which is applied at the end,
+  // even if price match is set. Hopefulyl the interpretation is correct, as this thing actually ended up taking almost two full days,
+  // so I ended up losing time for testing and refactoring (quite a few places in the application need it, including this method).
+  modifyTotalPriceBasedOnPrinceMatch(
     coverageCosts: number[],
     surchargeCosts: number[],
     discountCosts: number[]
@@ -142,8 +155,8 @@ export class User {
     const priceDifference = this.priceMatch - this.totalPrice;
 
     const totalPriceIncrease =
-      this.basePrice + addValues(coverageCosts) + addValues(surchargeCosts);
-    const totalPriceDecrease = addValues(discountCosts);
+      this.basePrice + addArrayValues(coverageCosts) + addArrayValues(surchargeCosts);
+    const totalPriceDecrease = addArrayValues(discountCosts);
     const absolutePriceChange = totalPriceIncrease + totalPriceDecrease;
 
     const priceIncreaseProportionalPool =
@@ -159,7 +172,7 @@ export class User {
     const surchargeCostsPriceChange =
       priceIncreaseProportionalPool *
       0.01 *
-      getPercentageOf(totalPriceIncrease, addValues(surchargeCosts));
+      getPercentageOf(totalPriceIncrease, addArrayValues(surchargeCosts));
 
     this.basePrice = getDecimalValue(
       this.basePrice +
@@ -188,9 +201,9 @@ export class User {
 
     this.totalPrice = getDecimalValue(
       this.basePrice +
-        addValues(this.getFlatAdjustmentPrices(this.coverages)) +
-        addValues(this.getFlatAdjustmentPrices(this.surcharges)) -
-        addValues(this.getFlatAdjustmentPrices(this.discounts))
+        addArrayValues(this.getFlatAdjustmentPrices(this.coverages)) +
+        addArrayValues(this.getFlatAdjustmentPrices(this.surcharges)) -
+        addArrayValues(this.getFlatAdjustmentPrices(this.discounts))
     );
   }
 
@@ -203,24 +216,6 @@ export class User {
     this[adjustmentType].forEach((adjustment, index) => {
       adjustment.setFlatCost(getDecimalValue(values[index]));
     });
-  }
-
-  getFlatAdjustmentPrices(adjustment: Coverage[] | Discount[] | Surcharge[]) {
-    if (!adjustment) return [0];
-
-    return adjustment.map((adjustment) => {
-      if (!adjustment.isSelected) return 0;
-
-      return adjustment.flatCost;
-    });
-  }
-
-  applyVipPriceAdjustments(totalPrice: number) {
-    this.vipDiscount?.calculateFlatCost(totalPrice);
-
-    if (this.vipDiscount?.isSelected) totalPrice -= this.vipDiscount.flatCost;
-
-    return getDecimalValue(totalPrice);
   }
 
   get vipDiscount() {

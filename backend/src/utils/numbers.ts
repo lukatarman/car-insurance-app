@@ -2,7 +2,7 @@ export const getDecimalValue = (number: number, decimals: number = 1) => {
   return parseFloat(number.toFixed(decimals));
 };
 
-export const addValues = (values: number[]): number => {
+export const addArrayValues = (values: number[]): number => {
   return values.reduce((prev, curr) => prev + curr);
 };
 
@@ -11,7 +11,7 @@ export const getPercentageOf = (whole: number, part: number) => {
 };
 
 export const adjustValuesProportionally = (prices: number[], totalAmount: number) => {
-  const totalExistingCost = addValues(prices);
+  const totalExistingCost = addArrayValues(prices);
 
   return prices.map((price) => {
     if (price === 0) return 0;
