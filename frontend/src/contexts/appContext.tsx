@@ -5,3 +5,8 @@ export const userDataState = atom({
   key: "userDataStateValue",
   default: new User(),
 });
+
+export const formErrorState = atom({
+  key: "formErrorStateValue",
+  default: false,
+});

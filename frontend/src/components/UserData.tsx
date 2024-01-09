@@ -7,7 +7,8 @@ import {
   userInputVPowerValueState,
   userInputVoucherValueState,
 } from "../contexts/userFormInputContext";
-import { SetterOrUpdater, useRecoilState } from "recoil";
+import { SetterOrUpdater, useRecoilState, useRecoilValue } from "recoil";
+import { formErrorState } from "../contexts/appContext";
 
 export type UserFormInputType = {
   inputName: string;
@@ -29,6 +30,7 @@ const UserData = () => {
   const [priceMatchInput, setPriceMatchInput] = useRecoilState(
     userInputPriceMatchValueState
   );
+  const formError = useRecoilValue(formErrorState);
 
   const formValues: UserFormInputType[] = [
     {
@@ -77,6 +79,12 @@ const UserData = () => {
     <div className="p-8 flex flex-col justify-center grow basis-3/4">
       <h2 className="text-2xl font-semibold mb-4">User data</h2>
       <div>{formRender}</div>
+      {formError && (
+        <div className="text-red-500">
+          Please fill out the first four values (ran out of time for proper form
+          validation)
+        </div>
+      )}
       <div>
         <button
           className="py-1 px-4 m-2 bg-gray-200 border border-gray-300 rounded"

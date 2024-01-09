@@ -1,4 +1,4 @@
-import { useRecoilState, useRecoilValue } from "recoil";
+import { useRecoilState, useRecoilValue, useSetRecoilState } from "recoil";
 import {
   userInputBirthdateValueState,
   userInputCityValueState,
@@ -14,7 +14,7 @@ import {
   getUserByName,
   updateUser,
 } from "../adapters/http.client.adapter";
-import { userDataState } from "../contexts/appContext";
+import { formErrorState, userDataState } from "../contexts/appContext";
 import { FormEvent, useEffect } from "react";
 import { UserDTO } from "../models/user.dto.js";
 
@@ -25,6 +25,7 @@ function AppBehavior() {
   const vehiclePowerInput = useRecoilValue(userInputVPowerValueState);
   const voucherInput = useRecoilValue(userInputVoucherValueState);
   const priceMatchInput = useRecoilValue(userInputPriceMatchValueState);
+  const setFormError = useSetRecoilState(formErrorState);
 
   const [userData, setUserData] = useRecoilState(userDataState);
 
@@ -38,6 +39,8 @@ function AppBehavior() {
 
   const handleFormSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
+
+    setFormError(formIsMissingRequiredValues());
 
     const currentUserData = {
       nameInput,
@@ -55,6 +58,15 @@ function AppBehavior() {
     if (!response) await addNewUser(currentUserData);
 
     await getNewData();
+  };
+
+  const formIsMissingRequiredValues = () => {
+    return (
+      nameInput === "" ||
+      birthdateInput === "" ||
+      cityInput === "" ||
+      vehiclePowerInput === ""
+    );
   };
 
   const updateExistingUser = async (response: User, userData: UserDTO) => {

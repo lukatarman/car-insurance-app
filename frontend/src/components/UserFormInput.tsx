@@ -17,7 +17,7 @@ const UserFormInput: React.FC<{ formValue: UserFormInputType; key: number }> = (
   };
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    if (e.target.value) formValue.setInnerState(e.target.value);
+    formValue.setInnerState(e.target.value);
   };
 
   return (
