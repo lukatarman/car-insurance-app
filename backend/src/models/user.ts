@@ -145,7 +145,7 @@ export class User {
   // When you enter a value into price match, the total price needs to equal the value entered into price match.
   // But the way to achieve this new value needs to be done so that every single price modifier needs to change also, so that the result equals price match.
   // I ended up also applying proportionate values, so percentage of total change to each of the modifiers, excluding voucher, which is applied at the end,
-  // even if price match is set. Hopefulyl the interpretation is correct, as this thing actually ended up taking almost two full days,
+  // even if price match is set. Hopefully the interpretation is correct, as this thing actually ended up taking almost two full days,
   // so I ended up losing time for testing and refactoring (quite a few places in the application need it, including this method).
   // Also, the result is sometimes off by a couple of decimals. This is of course because of javascript's calculation inaccuracy.
   // Again, I ran out of time, so didnt manage to use a more accurate method.
