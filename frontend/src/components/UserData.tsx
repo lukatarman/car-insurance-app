@@ -1,4 +1,3 @@
-import React, { useEffect } from "react";
 import UserFormInput from "./UserFormInput";
 import {
   userInputBirthdateValueState,
@@ -9,15 +8,6 @@ import {
   userInputVoucherValueState,
 } from "../contexts/userFormInputContext";
 import { SetterOrUpdater, useRecoilState } from "recoil";
-
-type formData = {
-  name: string;
-  birthdate: Date;
-  city: string;
-  vehiclePower: number;
-  voucher?: number;
-  priceMatch?: number;
-};
 
 export type UserFormInputType = {
   inputName: string;
