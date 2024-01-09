@@ -17,7 +17,7 @@ export class UsersController {
     return await this.dbClient.insertOne(user);
   }
 
-  async getAllUsers(): Promise<WithId<Document>[]> {
+  async getAllUsers(): Promise<WithId<User>[]> {
     return await this.dbClient.getAll();
   }
 

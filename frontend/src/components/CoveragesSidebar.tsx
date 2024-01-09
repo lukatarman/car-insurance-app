@@ -1,5 +1,5 @@
-import React, { FC } from "react";
-import { useRecoilState } from "recoil";
+import { FC } from "react";
+import { useRecoilValue } from "recoil";
 import { userDataState } from "../contexts/appContext";
 import { CoverageType } from "../types/index";
 import { changePriceAdjustmentSelectionStatus } from "../adapters/http.client.adapter";
@@ -10,7 +10,7 @@ type CoverageSidebarProps = {
 };
 
 const CoveragesSidebar: FC<CoverageSidebarProps> = ({ handleIsSelectedChange }) => {
-  const [userData, setUserData] = useRecoilState(userDataState);
+  const userData = useRecoilValue(userDataState);
 
   const handleCheckboxChange = async (coverage: CoverageType) => {
     await changePriceAdjustmentSelectionStatus(userData.name, coverage);
