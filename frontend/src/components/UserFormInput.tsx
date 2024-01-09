@@ -12,7 +12,7 @@ const UserFormInput: React.FC<{ formValue: UserFormInputType; key: number }> = (
   const hasEur = inputName === "voucher" || inputName === "price match";
 
   const getValue = () => {
-    if (formValue.innerState instanceof Date) return;
+    if (formValue.innerState instanceof Date) return "";
     return formValue.innerState;
   };
 

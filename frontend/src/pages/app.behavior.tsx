@@ -16,6 +16,7 @@ import {
 } from "../adapters/http.client.adapter";
 import { userDataState } from "../contexts/appContext";
 import { FormEvent, useEffect } from "react";
+import { UserDTO } from "../models/user.dto.js";
 
 function AppBehavior() {
   const nameInput = useRecoilValue(userInputNameValueState);
@@ -38,7 +39,7 @@ function AppBehavior() {
   const handleFormSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
-    const userObj = {
+    const currentUserData = {
       nameInput,
       birthdateInput,
       cityInput,
@@ -47,17 +48,33 @@ function AppBehavior() {
       priceMatchInput,
     };
 
-    const user = User.oneFromRawData(userObj);
+    const response = await getUserByName(nameInput);
 
-    const response = await getUserByName(user.name);
+    if (response) await updateExistingUser(response, currentUserData);
 
-    response ? await updateUser(user) : await addUser(user);
+    if (!response) await addNewUser(currentUserData);
 
-    getNewData();
+    await getNewData();
+  };
+
+  const updateExistingUser = async (response: User, userData: UserDTO) => {
+    const user = User.oneFromBackend(response);
+
+    user.updateFormValues(userData);
+
+    await updateUser(user);
+  };
+
+  const addNewUser = async (userData: UserDTO) => {
+    const user = User.oneFromRawData(userData);
+
+    await addUser(user);
   };
 
   const getNewData = async () => {
-    const response: User = await getUserByName(nameInput);
+    const response = await getUserByName(nameInput);
+
+    if (!response) return;
 
     setUserData(User.oneFromBackend(response));
   };

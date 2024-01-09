@@ -12,26 +12,22 @@ export class QueriesRouter {
   }
 
   routes = async (server: FastifyInstance) => {
+    server.get("/users/all", async () => {
+      return await this.controller.getAllUsers();
+    });
+
     server.get(
       "/users/:name",
       async (request: FastifyRequest<{ Params: { name: string } }>) => {
         const name = request.params.name;
 
-        const response = await this.controller.getOneUserByName(name);
-        return response;
+        return await this.controller.getOneUserByName(name);
       }
     );
 
-    server.get("/users/all", async () => {
-      const response = await this.controller.getAllUsers();
-      return response;
-    });
-
     server.post("/users", async (request) => {
       const data: UserDTO = request.body as UserDTO;
-      const newUser = await this.controller.insertOneUser(data);
-
-      return { user: newUser };
+      await this.controller.insertOneUser(data);
     });
 
     server.put(
@@ -40,7 +36,7 @@ export class QueriesRouter {
         const name = request.params.name;
         const data = request.body as Coverage;
 
-        return this.controller.updatePriceAdjustmentSelectionStatus(name, data);
+        await this.controller.updatePriceAdjustmentSelectionStatus(name, data);
       }
     );
 
@@ -50,7 +46,7 @@ export class QueriesRouter {
         const name = request.params.name;
         const data = request.body as User;
 
-        return this.controller.updateUser(name, data);
+        await this.controller.updateUser(name, data);
       }
     );
   };

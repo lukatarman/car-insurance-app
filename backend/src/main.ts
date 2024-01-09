@@ -16,7 +16,7 @@ const main = async (): Promise<void> => {
 
   const user = {
     name: "Luka Tarman",
-    birthday: new Date("21 september 1980 utc"),
+    birthday: new Date("21 september 1989 utc"),
     city: "rijeka",
     vehiclePower: 400,
   };
