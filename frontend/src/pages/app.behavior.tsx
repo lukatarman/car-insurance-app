@@ -25,7 +25,7 @@ function AppBehavior() {
   const vehiclePowerInput = useRecoilValue(userInputVPowerValueState);
   const voucherInput = useRecoilValue(userInputVoucherValueState);
   const priceMatchInput = useRecoilValue(userInputPriceMatchValueState);
-  const setFormError = useSetRecoilState(formErrorState);
+  const [formError, setFormError] = useRecoilState(formErrorState);
 
   const [userData, setUserData] = useRecoilState(userDataState);
 
@@ -40,7 +40,12 @@ function AppBehavior() {
   const handleFormSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
-    setFormError(formIsMissingRequiredValues());
+    if (formIsMissingRequiredValues()) {
+      setFormError(true);
+      return;
+    }
+
+    setFormError(false);
 
     const currentUserData = {
       nameInput,

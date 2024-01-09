@@ -17,6 +17,9 @@ function App() {
         </div>
       </form>
       <PriceInfo />
+      <div className="mt-5">
+        Please open the console (F12) to see the state of the database
+      </div>
     </div>
   );
 }
