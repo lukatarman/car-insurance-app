@@ -18,7 +18,7 @@ export class User {
   static oneFromRawData = (data: UserDTO) => {
     const user        = new User();
     user.name         = data.nameInput;
-    user.birthday     = new Date(data.birthdateInput);
+    user.birthday     = data.birthdateInput === "" ? new Date() : new Date(data.birthdateInput)
     user.city         = data.cityInput;
     user.vehiclePower = parseFloat(data.vehiclePowerInput);
     user.voucher      = parseFloat(data.voucherInput || "0");
@@ -33,7 +33,7 @@ export class User {
 
     const user        = new User();
     user.name         = dataCopy.name;
-    user.birthday     = dataCopy.birthday;
+    user.birthday     = new Date(dataCopy.birthday);
     user.city         = dataCopy.city;
     user.vehiclePower = dataCopy.vehiclePower;
     user.voucher      = dataCopy.voucher;
