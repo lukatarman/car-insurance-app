@@ -37,7 +37,9 @@ export class DatabaseClient {
   }
 
   async replaceOneByName(name: string, data: User): Promise<void> {
-    await this.collection.replaceOne({ name }, data);
+    const user = new User(data);
+
+    await this.collection.replaceOne({ name }, user);
   }
 
   stop(): void {
