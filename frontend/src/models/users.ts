@@ -18,11 +18,11 @@ export class User {
   static oneFromRawData = (data: UserDTO) => {
     const user        = new User();
     user.name         = data.nameInput;
-    user.birthday     = data.birthdateInput;
+    user.birthday     = new Date(data.birthdateInput);
     user.city         = data.cityInput;
-    user.vehiclePower = data.vehiclePowerInput;
-    user.voucher      = data.voucherInput || 0;
-    user.priceMatch   = data.priceMatchInput || 0;
+    user.vehiclePower = parseFloat(data.vehiclePowerInput);
+    user.voucher      = parseFloat(data.voucherInput || "0");
+    user.priceMatch   = parseFloat(data.priceMatchInput || "0");
 
     return user;
   };
@@ -49,10 +49,10 @@ export class User {
 
   updateFormValues(data: UserDTO) {
     this.name = data.nameInput;
-    this.birthday = data.birthdateInput;
+    this.birthday = new Date(data.birthdateInput);
     this.city = data.cityInput;
-    this.vehiclePower = data.vehiclePowerInput;
-    this.voucher = data.voucherInput;
-    this.priceMatch = data.priceMatchInput;
+    this.vehiclePower = parseFloat(data.vehiclePowerInput);
+    this.voucher = parseFloat(data.voucherInput || "0");
+    this.priceMatch = parseFloat(data.priceMatchInput || "0");
   }
 }

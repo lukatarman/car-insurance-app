@@ -7,7 +7,7 @@ export const userInputNameValueState = atom({
 
 export const userInputBirthdateValueState = atom({
   key: "UserInputBirthdateValue",
-  default: new Date(),
+  default: "",
 });
 
 export const userInputCityValueState = atom({
@@ -17,17 +17,17 @@ export const userInputCityValueState = atom({
 
 export const userInputVPowerValueState = atom({
   key: "UserInputVPowerValue",
-  default: 0,
+  default: "",
 });
 
 export const userInputVoucherValueState = atom({
   key: "UserInputVoucherValue",
-  default: 0,
+  default: "",
 });
 
 export const userInputPriceMatchValueState = atom({
   key: "UserInputPriceMatchValue",
-  default: 0,
+  default: "",
 });
 
 export const formDataValuesState = atom({

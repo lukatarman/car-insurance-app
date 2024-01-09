@@ -13,10 +13,7 @@ export type UserFormInputType = {
   inputName: string;
   inputType: string;
   innerState: string | number | Date;
-  setInnerState:
-    | SetterOrUpdater<string>
-    | SetterOrUpdater<Date>
-    | SetterOrUpdater<number>;
+  setInnerState: SetterOrUpdater<string>;
 };
 
 const UserData = () => {
