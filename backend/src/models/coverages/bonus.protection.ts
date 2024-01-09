@@ -1,4 +1,4 @@
-import { Coverage, CoverageNames } from "../../types/types.ts";
+import { Coverage, CoverageNames } from "../types.ts";
 import { getDecimalValue } from "../../utils/numbers.ts";
 import { User } from "../user.ts";
 

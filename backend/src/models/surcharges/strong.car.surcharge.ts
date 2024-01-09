@@ -1,4 +1,4 @@
-import { Discount, SurchargeNames } from "../../types/types.ts";
+import { Discount, SurchargeNames } from "../types.ts";
 import { getDecimalValue } from "../../utils/numbers.ts";
 import { User } from "../user.ts";
 

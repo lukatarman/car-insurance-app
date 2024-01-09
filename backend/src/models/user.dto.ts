@@ -1,4 +1,4 @@
-import { Coverage, Discount, Surcharge } from "../types/types.ts";
+import { Coverage, Discount, Surcharge } from "./types.ts";
 
 export interface UserDTO {
   name: string;

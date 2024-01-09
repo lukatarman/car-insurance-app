@@ -1,5 +1,5 @@
 import { ageSurcharges, cityPrices } from "../assets/base.price.data.mock.ts";
-import { Coverage, Discount, DiscountNames, Surcharge } from "../types/types.ts";
+import { Coverage, Discount, DiscountNames, Surcharge } from "./types.ts";
 import {
   addValues,
   adjustValuesProportionally,

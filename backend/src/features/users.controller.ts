@@ -2,7 +2,7 @@ import { User } from "../models/user.ts";
 import { DatabaseClient } from "../infrastructure/database.client.ts";
 import { UserDTO } from "../models/user.dto.ts";
 import { WithId } from "mongodb";
-import { Coverage } from "../types/types.ts";
+import { Coverage } from "../models/types.ts";
 
 export class UsersController {
   private dbClient: DatabaseClient;

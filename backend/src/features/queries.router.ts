@@ -1,7 +1,7 @@
 import { FastifyInstance, FastifyRequest } from "fastify";
 import { UsersController } from "./users.controller.ts";
 import { UserDTO } from "../models/user.dto.ts";
-import { Coverage } from "../types/types.ts";
+import { Coverage } from "../models/types.ts";
 
 export class QueriesRouter {
   private controller: UsersController;

@@ -1,4 +1,4 @@
-import { User } from "../models/user.ts";
+import { User } from "./user.ts";
 
 export enum CoverageNames {
   protection = "Bonus protection",

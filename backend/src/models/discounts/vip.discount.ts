@@ -1,4 +1,4 @@
-import { Discount, DiscountNames } from "../../types/types.ts";
+import { Discount, DiscountNames } from "../types.ts";
 import { getDecimalValue } from "../../utils/numbers.ts";
 // import { getDecimalValue } from "../../utils/numbers.ts";
 import { User } from "../user.ts";
