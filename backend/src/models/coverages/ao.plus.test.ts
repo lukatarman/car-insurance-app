@@ -3,6 +3,9 @@ import { UserDTO } from "../user.dto.ts";
 import { User } from "../user.ts";
 import { AOPlus } from "./ao.plus.ts";
 
+// Just a small note here, while I realise that the code is a bit messy due to running out of time to refactor/tidy up, I added the testing configuration
+// and this small text example, just to demonstrate that I am able to write unit tests.
+
 describe("AOPlus", function () {
   let user: User;
   let input: UserDTO;
