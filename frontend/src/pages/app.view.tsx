@@ -20,6 +20,11 @@ function App() {
       <div className="ml-2 mt-5">
         Please open the console (F12) to see the state of the database
       </div>
+      <div className="ml-2 mt-5">
+        A small note on the functionality. Upon clicking save, the application checks the
+        database for an existing user under the same name. This allows for modifying the
+        values of a user that is already added.
+      </div>
     </div>
   );
 }

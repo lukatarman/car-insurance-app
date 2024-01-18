@@ -1,4 +1,3 @@
-import { useEffect } from "react";
 import { useRecoilValue } from "recoil";
 import { userDataState } from "../contexts/appContext";
 
@@ -9,7 +8,7 @@ const PriceInfo = () => {
     if (!userData.coverages) return;
 
     return userData.coverages.map((coverage, index) => {
-      if (!coverage.isSelected) return;
+      if (!coverage.isSelected) return "";
 
       const percentageCostOf = coverage.percentageCost
         ? `(${coverage.percentageCost}% ${coverage.percentageCostOf})`
@@ -30,7 +29,7 @@ const PriceInfo = () => {
     if (!userData.surcharges) return;
 
     return userData.surcharges.map((surcharge, index) => {
-      if (!surcharge.isSelected) return;
+      if (!surcharge.isSelected) return "";
 
       const percentageCostOf = surcharge.percentageCost
         ? `(${surcharge.percentageCost}% ${surcharge.percentageCostOf})`
@@ -51,7 +50,7 @@ const PriceInfo = () => {
     if (!userData.discounts) return;
 
     return userData.discounts.map((discount, index) => {
-      if (!discount.isSelected) return;
+      if (!discount.isSelected) return "";
 
       const percentageCostOf = discount.percentageCost
         ? `(${discount.percentageCost}% ${discount.percentageCostOf})`

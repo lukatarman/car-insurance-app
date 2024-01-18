@@ -25,7 +25,7 @@ function AppBehavior() {
   const vehiclePowerInput = useRecoilValue(userInputVPowerValueState);
   const voucherInput = useRecoilValue(userInputVoucherValueState);
   const priceMatchInput = useRecoilValue(userInputPriceMatchValueState);
-  const [formError, setFormError] = useRecoilState(formErrorState);
+  const setFormError = useSetRecoilState(formErrorState);
 
   const [userData, setUserData] = useRecoilState(userDataState);
 

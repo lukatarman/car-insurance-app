@@ -1,5 +1,5 @@
-import React, { FC, useEffect } from "react";
-import { useRecoilState } from "recoil";
+import { FC } from "react";
+import { useRecoilValue } from "recoil";
 import { userDataState } from "../contexts/appContext";
 import { CoverageType, Discount, Surcharge, SurchargeNames } from "../types/index";
 import { changePriceAdjustmentSelectionStatus } from "../adapters/http.client.adapter";
@@ -9,7 +9,7 @@ type DiscountsHeaderProps = {
 };
 
 const DiscountsHeader: FC<DiscountsHeaderProps> = ({ handleIsSelectedChange }) => {
-  const [userData, setUserData] = useRecoilState(userDataState);
+  const userData = useRecoilValue(userDataState);
 
   const handleCheckboxChange = async (discount: CoverageType) => {
     await changePriceAdjustmentSelectionStatus(userData.name, discount);
