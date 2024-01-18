@@ -5,10 +5,7 @@
   "main": "main.ts",
   "type": "module",
   "scripts": {
-    "start": "ts-node-esm src/main.ts",
-    "alt-start": "node --loader ts-node/esm src/main.ts",
-    "third-alt": "ts-node src/main.ts",
-    "fourth-alt": "npx ts-node-esm src/main.ts"
+    "start": "node --loader ts-node/esm src/main.ts"
   },
   "author": "Luka Tarman",
   "license": "ISC",
