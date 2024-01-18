@@ -5,7 +5,8 @@
   "main": "main.ts",
   "type": "module",
   "scripts": {
-    "start": "node --loader ts-node/esm src/main.ts"
+    "start": "node --loader ts-node/esm src/main.ts",
+    "test": "jest"
   },
   "author": "Luka Tarman",
   "license": "ISC",
@@ -16,7 +17,9 @@
     "mongodb-memory-server": "8.12.0"
   },
   "devDependencies": {
+    "@types/jest": "^29.5.11",
     "@types/node": "20.10.5",
+    "ts-jest": "^29.1.1",
     "ts-node": "10.9.2",
     "tsconfig-paths": "4.2.0",
     "typescript": "5.3.3"

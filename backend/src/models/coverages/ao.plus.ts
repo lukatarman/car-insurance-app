@@ -17,6 +17,7 @@ export class AOPlus implements Coverage {
 
   checkIfSelected(input: UserDTO) {
     const coverages = input.coverages;
+    console.log(coverages);
     if (!coverages || coverages.length === 0) return false;
 
     return coverages.filter((coverage) => coverage.name === this.name)[0].isSelected;
